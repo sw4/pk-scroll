@@ -34,15 +34,16 @@ myApp.directive('ngScroll', function ($interval) {
                 containerW = 0,
                 containerT,
                 contentT,
-                elWidth,
-                elHeight,
+                containerWidth,
+                containerHeight,
+                contentWidth,
+                contentHeight,
                 mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
             if (getStyle(el[0], 'position') == "static") {
                 el.css({ position: "relative" });
             };
             function resolveDimensions() {
-                bobYh = bobY[0].offsetHeight;
-                bobXw = bobX[0].offsetWidth;
+
                 contentH = content[0].offsetHeight;
                 contentW = content[0].offsetWidth;
                 containerH = container[0].offsetHeight;
@@ -90,14 +91,20 @@ myApp.directive('ngScroll', function ($interval) {
                     });
                     allowY = false;
                 }
+                bobYh = bobY[0].offsetHeight;
+                bobXw = bobX[0].offsetWidth;
             }
             resolveDimensions();
             var stop = $interval(function () {
-                var width = el[0].offsetWidth,
-                    height = el[0].offsetHeight;
-                if ((width !== elWidth) || (height !== elHeight)) {
-                    elWidth = width;
-                    elHeight = height;
+                var widthContainer = el[0].offsetWidth,
+                    heightContainer = el[0].offsetHeight,
+                    widthContent = content[0].offsetWidth,
+                    heightContent = content[0].offsetHeight;
+                if ((widthContainer !== containerWidth) || (heightContainer !== containerHeight) || (widthContent !== contentWidth) || (heightContent !== contentHeight)) {
+                    containerWidth = widthContainer;
+                    containerHeight = heightContainer;
+                    contentWidth = widthContent;
+                    contentHeight = heightContent;
                     resolveDimensions();
                     scope.$eval(attrs.taOnResize);
                 }
@@ -118,6 +125,7 @@ myApp.directive('ngScroll', function ($interval) {
                 } else if (percY > 1) {
                     percY = 1;
                 }
+                console.log(containerH, bobYh);
                 bobY.css({
                     top: (containerH - bobYh) * percY + 'px'
                 });
