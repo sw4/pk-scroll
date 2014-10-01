@@ -1,5 +1,5 @@
 myApp.directive('ngScroll', function ($interval) {
-    return {
+return {
         restrict: 'A',
         replace: false,
         scope: {
@@ -236,12 +236,19 @@ myApp.directive('ngScroll', function ($interval) {
             }
             /* Mouse wheel scrolling */
             function mouseScroll(e) {
+
                 var top = parseInt(getStyle(content[0], 'top')) / (contentH - containerH) * -1,
                 offset = 0.1;
                 if (e.wheelDelta > 0 || e.detail > 0) {
                     offset = offset * -1;
                 }
                 scrollContentY(top + offset);
+
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+                e.cancelBubble = true;  // IE events
+                e.returnValue = false;  // IE events
+                return false;
             }
             if (container[0].attachEvent) //if IE (and Opera depending on user setting)
                 container[0].attachEvent("on" + mousewheelevt, mouseScroll);
