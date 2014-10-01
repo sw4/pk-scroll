@@ -5,6 +5,8 @@ Native Angular / vanilla JS custom scrollbars.
 
 **Licensed under [cc by-sa 3.0](http://creativecommons.org/licenses/by-sa/3.0/) with attribution required**
 
+Code is not optimised.
+
 Usage
 ====
 
