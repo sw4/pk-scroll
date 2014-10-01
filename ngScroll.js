@@ -39,7 +39,8 @@ return {
                 containerWidth,
                 containerHeight,
                 contentWidth,
-                contentHeight,
+                contentHeight,    
+                scrollDir = scope.ngScroll.toLowerCase(),
                 mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
             if (getStyle(el[0], 'position') == "static") {
                 el.css({ position: "relative" });
@@ -51,7 +52,6 @@ return {
                 containerW = container[0].offsetWidth;
                 containerT = el[0].getBoundingClientRect().top;
                 contentT = content[0].getBoundingClientRect().top;
-                var scrollDir = scope.ngScroll.toLowerCase();
                 if (scrollDir.indexOf("x") > -1 && contentW > containerW) {;
                     bobX.css({
                         display: 'block',
@@ -62,7 +62,7 @@ return {
                         opacity: 1
                     });
                     bobXw = bobX[0].offsetWidth;
-                    scrollContentY(percX);
+                    scrollContentX(percX);
                 } else {
                     bobX.css({
                         display: 'none',
@@ -154,7 +154,7 @@ return {
                     left: (containerW - bobXw) * scrollPerc + 'px'
                 });
                 content.css({
-                    left: ((contentW - containerW) * scrollPerc) + 'px'
+                    left: ((contentW - containerW) * scrollPerc) * -1 + 'px'
                 });
             }
 
@@ -248,13 +248,19 @@ return {
             /* Mouse wheel scrolling */
             function mouseScroll(e) {
 
+                
+                
                 var top = parseInt(getStyle(content[0], 'top')) / (contentH - containerH) * -1,
+                    left = parseInt(getStyle(content[0], 'left')) / (contentW - containerW) * -1,
                 offset = 0.1;
                 if (e.wheelDelta > 0 || e.detail > 0) {
                     offset = offset * -1;
                 }
-                scrollContentY(top + offset);
-
+                if(scrollDir.indexOf("y") > -1){
+                    scrollContentY(top + offset);
+                }else{
+                    scrollContentX(left + offset);
+                }
                 if (e.preventDefault) e.preventDefault();
                 if (e.stopPropagation) e.stopPropagation();
                 e.cancelBubble = true;  // IE events
