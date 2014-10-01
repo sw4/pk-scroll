@@ -2,7 +2,7 @@ myApp.directive('ngScroll', function ($interval) {
     return {
         restrict: 'A',
         replace: false,
-        scope: {
+        scope: { 
             ngScroll: '@'
         },
         transclude: true,
@@ -38,7 +38,9 @@ myApp.directive('ngScroll', function ($interval) {
                 elWidth,
                 elHeight,
                 mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
-
+            if(getStyle(el[0], 'position')=="static"){
+                el.css({position:"relative"});
+            };
             function resolveDimensions() {
                 bobYH = bobY[0].offsetHeight;
                 bobXW = bobX[0].offsetWidth;
@@ -224,11 +226,13 @@ myApp.directive('ngScroll', function ($interval) {
             trackX[0].addEventListener("click", function (e) {
                 scrollContentX((e.pageX - el[0].getBoundingClientRect().left) / containerW);
             });
-
+            function getStyle(el, style){
+                var css = window.getComputedStyle(el);
+                return css.getPropertyValue(style);
+            }
             /* Mouse wheel scrolling */
             function mouseScroll(e) {
-                var style = window.getComputedStyle(content[0]),
-                    top = parseInt(style.getPropertyValue('top')) / (contentH - containerH) * -1,
+                    var top = parseInt(getStyle(content[0],'top')) / (contentH - containerH) * -1,
                     offset = 0.1;
                 if (e.wheelDelta > 0 || e.detail > 0) {
                     offset = offset * -1;
