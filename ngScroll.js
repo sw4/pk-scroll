@@ -27,6 +27,8 @@ return {
                 bobX = angular.element(children[4]),
                 bobXw = 0,
                 bobXl = 0,
+                percY = 0,
+                percX=0,
                 bobXOffset = 0,
                 contentH = 0,
                 contentW = 0,
@@ -43,7 +45,6 @@ return {
                 el.css({ position: "relative" });
             };
             function resolveDimensions() {
-
                 contentH = content[0].offsetHeight;
                 contentW = content[0].offsetWidth;
                 containerH = container[0].offsetHeight;
@@ -60,6 +61,8 @@ return {
                         display: 'block',
                         opacity: 1
                     });
+                    bobXw = bobX[0].offsetWidth;
+                    scrollContentY(percX);
                 } else {
                     bobX.css({
                         display: 'none',
@@ -69,6 +72,7 @@ return {
                         display: 'none',
                         opacity: 0
                     });
+                    scrollContentX(0);
                 }
                 if (scrollDir.indexOf("y") > -1 && contentH > containerH) {;
                     bobY.css({
@@ -79,6 +83,9 @@ return {
                         display: 'block',
                         opacity: 1
                     });
+                    bobYh = bobY[0].offsetHeight;
+                    scrollContentY(percY);
+
                     allowY = true;
                 } else {
                     bobY.css({
@@ -89,10 +96,11 @@ return {
                         display: 'none',
                         opacity: 0
                     });
+                    scrollContentY(0);
                     allowY = false;
                 }
-                bobYh = bobY[0].offsetHeight;
-                bobXw = bobX[0].offsetWidth;
+                
+                
             }
             resolveDimensions();
             var stop = $interval(function () {
@@ -116,34 +124,37 @@ return {
                 stop = undefined;
             });
 
-            function scrollContentY(percY) {
+            function scrollContentY(scrollPerc) {
                 if (!allowY) {
                     return;
                 }
-                if (percY < 0) {
-                    percY = 0;
-                } else if (percY > 1) {
-                    percY = 1;
+                if (scrollPerc < 0) {
+                    scrollPerc = 0;
+                } else if (scrollPerc > 1) {
+                    scrollPerc = 1;
                 }
+                percY = scrollPerc;
                 bobY.css({
-                    top: (containerH - bobYh) * percY + 'px'
+                    top: (containerH - bobYh) * scrollPerc + 'px'
                 });
                 content.css({
-                    top: ((contentH - containerH) * percY) * -1 + 'px'
+                    top: ((contentH - containerH) * scrollPerc) * -1 + 'px'
                 });
             }
 
-            function scrollContentX(percX) {
-                if (percX < 0) {
-                    percX = 0;
-                } else if (percX > 1) {
-                    percX = 1;
+            function scrollContentX(scrollPerc) {
+                
+                if (scrollPerc < 0) {
+                    scrollPerc = 0;
+                } else if (scrollPerc > 1) {
+                    scrollPerc = 1;
                 }
+                percX = scrollPerc;
                 bobX.css({
-                    left: (containerW - bobXw) * percX + 'px'
+                    left: (containerW - bobXw) * scrollPerc + 'px'
                 });
                 content.css({
-                    left: ((contentW - containerW) * percX) + 'px'
+                    left: ((contentW - containerW) * scrollPerc) + 'px'
                 });
             }
 
@@ -180,7 +191,7 @@ return {
                 flag = 0, dragX = 1;
                 startX = e.pageX;
                 bobXl = bobX[0].offsetLeft;
-                bobXOffset = startX - bobXl;
+                bobXOffset = startX -bobXl;
             }, false);
             draggableX.addEventListener("mousemove", function () {
                 flag = 1;
@@ -196,7 +207,7 @@ return {
                     endY = e.pageY - bobYOffset;
                     distanceY = endY - startY;
                     endY = bobYt + distanceY;
-                    var percY = endY / (containerH - bobYh);
+                    percY = endY / (containerH - bobYh);
                     scrollContentY(percY);
                     bobY.addClass('ng-is-scrolling');
                 }
@@ -205,7 +216,7 @@ return {
                     endX = e.pageX - bobXOffset;
                     distanceX = endX - startX;
                     endX = bobXl + distanceX;
-                    var percX = endX / (containerW - bobXw);
+                    percX = endX / (containerW - bobXw);
                     scrollContentX(percX);
                     bobX.addClass('ng-is-scrolling');
                 }
