@@ -1,3 +1,4 @@
+
 .ng-scrolling {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -24,9 +25,10 @@
 }
 .ng-scroll-trackY, .ng-scroll-trackX {
     position:absolute;
-    background:rgba(0, 0, 0, .07);
+    background:rgba(0, 0, 0, .04);
     cursor:default;
     opacity:0;
+    border-radius:10px;
 }
 .ng-scroll-trackY {
     right:2px;
@@ -43,7 +45,7 @@
     position:absolute;
     cursor:default;
     border-radius:10px;
-    background:rgba(0, 0, 0, .6);
+    background:rgba(0, 0, 0, .4);
     opacity:0;
     transition:background 150ms ease-in;
 }
