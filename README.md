@@ -7,6 +7,8 @@ Native Angular / vanilla JS custom scrollbars.
 
 Code is not optimised.
 
+[Demo can be seen here](http://sw4.github.io/ngScroll/)
+
 Usage
 ====
 
