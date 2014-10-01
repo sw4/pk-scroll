@@ -125,7 +125,6 @@ myApp.directive('ngScroll', function ($interval) {
                 } else if (percY > 1) {
                     percY = 1;
                 }
-                console.log(containerH, bobYh);
                 bobY.css({
                     top: (containerH - bobYh) * percY + 'px'
                 });
