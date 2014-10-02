@@ -45,33 +45,33 @@ return {
 
             container[0].addEventListener("scroll", function (e) {                
                 
-                var scrollDistY=container[0].scrollTop;
-                var scrollPercY = scrollDistY / (contentH-containerH);
-                var scrollDistX=container[0].scrollLeft;
-                var scrollPercX = scrollDistX / (contentW-containerW);
-                if (scrollPercY < 0) {
-                    scrollPercY = 0;
-                } else if (scrollPercY > 1) {
-                    scrollPercY = 1;
+                var distY=container[0].scrollTop,        
+                    distX=container[0].scrollLeft;        
+                percY = distY / (contentH-containerH);        
+                percX = distX / (contentW-containerW);
+                if (percY < 0) {
+                    percY = 0;
+                } else if (percY > 1) {
+                    percY = 1;
                 }
-                if (scrollPercX < 0) {
-                    scrollPercX = 0;
-                } else if (scrollPercX > 1) {
-                    scrollPercX = 1;
+                if (percX < 0) {
+                    percX = 0;
+                } else if (percX > 1) {
+                    percX = 1;
                 }                
                 trackY.css({
-                    bottom:scrollDistY*-1+'px',
-                    right:scrollDistX*-1+'px'
+                    bottom:distY*-1+'px',
+                    right:distX*-1+'px'
                 });                
                 trackX.css({
-                    bottom:scrollDistY*-1+'px',
-                    left:scrollDistX+'px'
+                    bottom:distY*-1+'px',
+                    left:distX+'px'
                 }); 
                 bobY.css({
-                    top: (containerH - bobYh) * scrollPercY + 'px'
+                    top: (containerH - bobYh) * percY + 'px'
                 });
                 bobX.css({
-                    left: (containerW - bobXw) * scrollPercX + 'px'
+                    left: (containerW - bobXw) * percX + 'px'
                 });
             });
     
@@ -101,9 +101,8 @@ return {
                         display: 'block',
                         opacity: 1
                     });
-                    bobYh = bobY[0].offsetHeight;
-                    // scrollContentY(percY);
-
+                    bobYh = bobY[0].offsetHeight;                    
+                    container[0].scrollTop=(contentH-containerH) * percY;
                     allowY = true;
                 } else {
                     bobY.css({
@@ -114,7 +113,7 @@ return {
                         display: 'none',
                         opacity: 0
                     });
-                    // scrollContentY(0);
+                    container[0].scrollTop=0;
                     allowY = false;
                 }
                 
@@ -128,7 +127,8 @@ return {
                         opacity: 1
                     });
                     bobXw = bobX[0].offsetWidth;
-                    // scrollContentY(percY);
+                    
+                    container[0].scrollLeft=(contentW-containerW) * percX;
 
                     allowX = true;
                 } else {
@@ -140,7 +140,7 @@ return {
                         display: 'none',
                         opacity: 0
                     });
-                    // scrollContentX(0);
+                    container[0].scrollLeft=0
                     allowX = false;
                 }
             }
