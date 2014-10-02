@@ -43,10 +43,21 @@ return {
                         scrollDir = scope.ngScroll.toLowerCase(),
                         mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
 
-                    container[0].addEventListener("scroll", function () {
-
+        
+                    function scroll(args){
+                        
+                        if(args.x>contentW-containerW){
+                            args.x=contentW-containerW;
+                        }else if(args.x<0){
+                            args.x=0;
+                        }
+                        if(args.y>contentH-containerH){
+                            args.y=contentH-containerH;
+                        }else if(args.y<0){
+                            args.y=0;
+                        }        
                         var distY = container[0].scrollTop,
-                            distX = container[0].scrollLeft;
+                            distX = args.x;
                         percY = distY / (contentH - containerH);
                         percX = distX / (contentW - containerW);
                         if (percY < 0) {
@@ -73,8 +84,22 @@ return {
                         bobX.css({
                             left: (containerW - bobXw) * percX + 'px'
                         });
+                        if(args){
+                            if(!args.stop && args.x!=undefined){
+                                 container[0].scrollLeft = args.x;   
+                            }
+                            
+                            if(!args.stop && args.y!=undefined){
+                                 container[0].scrollTop = args.y;   
+                            }
+                        }
+                    }
+                    container[0].addEventListener("scroll", function () {
+                        scroll({stop:true});                        
                     });
-
+document.getElementById('button').addEventListener("click", function () {
+   container[0].scrollTop=100; 
+});
 
 
                     if (getStyle(el[0], 'position') == "static") {
@@ -127,6 +152,7 @@ return {
                                 opacity: 1
                             });
                             bobXw = bobX[0].offsetWidth;
+
                             container[0].scrollLeft = (contentW - containerW) * percX;
                             content.css({width:'auto'});
                             // allowX = true;
@@ -213,7 +239,7 @@ return {
                             distanceY = endY - startY;
                             endY = bobYt + distanceY;
                             percY = endY / (containerH - bobYh);
-                            container[0].scrollTop = (contentH - containerH) * percY;
+                            scroll({y: (contentH - containerH) * percY});
                             bobY.addClass('ng-is-scrolling');
                             angular.element(document.body).addClass('ng-scrolling');
                         }
@@ -223,7 +249,7 @@ return {
                             distanceX = endX - startX;
                             endX = bobXl + distanceX;
                             percX = endX / (containerW - bobXw);
-                            container[0].scrollLeft = (contentW - containerW) * percX;
+                            scroll({x:container[0].scrollLeft = (contentW - containerW) * percX});
                             bobX.addClass('ng-is-scrolling');
                             angular.element(document.body).addClass('ng-scrolling');
                         }
@@ -242,10 +268,10 @@ return {
                     }, false);
                     /* track clicking */
                     trackY[0].addEventListener("click", function (e) {
-                        container[0].scrollTop = ((e.pageY - el[0].getBoundingClientRect().top) / containerH * (contentH - containerH));
+                        scroll({y:(e.pageY - el[0].getBoundingClientRect().top) / containerH * (contentH - containerH)});
                     });
                     trackX[0].addEventListener("click", function (e) {
-                        container[0].scrollLeft = ((e.pageX - el[0].getBoundingClientRect().left) / containerW * (contentW - containerW));
+                        scroll({x:(e.pageX - el[0].getBoundingClientRect().left) / containerW * (contentW - containerW)});
                     });
                     /* Mouse wheel scrolling */
                     function mouseScroll(e) {
@@ -256,9 +282,10 @@ return {
                             offset = offset * -1;
                         }
                         if (scrollDir.indexOf("y") > -1) {
-                            container[0].scrollTop = top + (contentH - containerH) * offset;
+                            scroll({y: top + (contentH - containerH) * offset});
                         } else {
-                            container[0].scrollLeft = left + (contentW - containerW) * offset;
+                            scroll({x:left + (contentW - containerW) * offset});
+                        //    container[0].scrollLeft = left + (contentW - containerW) * offset;
                         }
                         /* Stop wheel propogation (prevent parent scrolling) */
                         if (e.preventDefault) e.preventDefault();
