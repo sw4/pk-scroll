@@ -45,6 +45,10 @@ return {
                 mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
             if (getStyle(el[0], 'position') == "static") {
                 el.css({ position: "relative" });
+            }                
+            function getStyle(obj, style) {
+                var css = window.getComputedStyle(obj);
+                return css.getPropertyValue(style);
             }
             function resolveDimensions() {
                 contentH = content[0].offsetHeight;
@@ -165,7 +169,6 @@ return {
                 dragX = 0,
                 draggableY = bobY[0],
                 draggableX = bobX[0],
-                dragarea = window,
                 startY = 0,
                 endY = 0,
                 distanceY = 0,
@@ -185,7 +188,6 @@ return {
                 document.onselectstart = function () {
                     return false;
                 };
-                angular.element(document.body).addClass('ng-scrolling');
             }, false);
 
             draggableX.addEventListener("mousedown", function (e) {
@@ -199,10 +201,9 @@ return {
                 document.onselectstart = function () {
                     return false;
                 };
-                angular.element(document.body).addClass('ng-scrolling');
             }, false);
 
-            dragarea.addEventListener("mousemove", function (e) {
+            window.addEventListener("mousemove", function (e) {
                 if (dragY === 1) {
                     startY = bobYt;
                     endY = e.pageY - bobYOffset;
@@ -211,6 +212,7 @@ return {
                     percY = endY / (containerH - bobYh);
                     scrollContentY(percY);
                     bobY.addClass('ng-is-scrolling');
+                    angular.element(document.body).addClass('ng-scrolling');
                 }
                 if (dragX === 1) {
                     startX = bobXl;
@@ -220,9 +222,10 @@ return {
                     percX = endX / (containerW - bobXw);
                     scrollContentX(percX);
                     bobX.addClass('ng-is-scrolling');
+                    angular.element(document.body).addClass('ng-scrolling');
                 }
             });
-            dragarea.addEventListener("mouseup", function () {
+            window.addEventListener("mouseup", function () {
                 dragY = 0, dragX = 0;
                 bobY.removeClass('ng-is-scrolling');
                 bobX.removeClass('ng-is-scrolling');
@@ -242,10 +245,6 @@ return {
             trackX[0].addEventListener("click", function (e) {
                 scrollContentX((e.pageX - el[0].getBoundingClientRect().left) / containerW);
             });
-            function getStyle(obj, style) {
-                var css = window.getComputedStyle(obj);
-                return css.getPropertyValue(style);
-            }
             /* Mouse wheel scrolling */
             function mouseScroll(e) {
                 var top = parseInt(getStyle(content[0], 'top'),0) / (contentH - containerH) * -1,
@@ -259,6 +258,7 @@ return {
                 }else{
                     scrollContentX(left + offset);
                 }
+                /* Stop wheel propogation (prevent parent scrolling) */
                 if (e.preventDefault) e.preventDefault();
                 if (e.stopPropagation) e.stopPropagation();
                 e.cancelBubble = true;  // IE events
