@@ -1,11 +1,5 @@
 
 .ng-scrolling {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
     cursor:default;
 }
 .ng-scroll-container {
@@ -17,8 +11,7 @@
     overflow:hidden;
 }
 .ng-scroll-content {
-    position:absolute;
-    top:0;
+    position:relative;
 }
 .ng-scroll-container:hover .ng-scroll-trackY, .ng-scroll-container:hover .ng-scroll-bobY, .ng-scroll-container:hover .ng-scroll-trackX, .ng-scroll-container:hover .ng-scroll-bobX {
     opacity:1;
