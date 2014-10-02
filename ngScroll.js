@@ -1,29 +1,28 @@
 myApp.directive('ngScroll', function ($interval) {
 return {
                 restrict: 'A',
-                replace: false,
+                replace: true,
                 scope: {
                     ngScroll: '@'
                 },
                 transclude: true,
                 /*jshint multistr: true */
                 template: "<div class='ng-scroll-container'>\
-        <div class='ng-scroll-content' ng-transclude></div>\
-            <div class='ng-scroll-trackY'><div class='ng-scroll-bobY'></div></div>\
-            <div class='ng-scroll-trackX'><div class='ng-scroll-bobX'></div></div>\
-        </div>",
+                <div class='ng-scroll-content'><div class='ng-scroll-area' ng-transclude></div></div>\
+                    <div class='ng-scroll-trackY'><div class='ng-scroll-bobY'></div></div>\
+                    <div class='ng-scroll-trackX'><div class='ng-scroll-bobX'></div></div>\
+                </div>",
                 link: function (scope, el, attrs) {
-
                     var container = el.children(),
                         children = container.children(),
                         content = angular.element(children[0]),
-                        trackY = angular.element(children[1]),
+                        trackY = angular.element(container[1]),
                         bobY = angular.element(trackY[0].children[0]),
                         allowY,
                         bobYh = 0,
                         bobYt = 0,
                         bobYOffset = 0,
-                        trackX = angular.element(children[2]),
+                        trackX = angular.element(container[2]),
                         bobX = angular.element(trackX[0].children[0]),
                         bobXw = 0,
                         bobXl = 0,
@@ -43,23 +42,13 @@ return {
                         scrollDir = scope.ngScroll.toLowerCase(),
                         mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
 
-        
-                    function scroll(args){
-                        
-                        if(args.x>contentW-containerW){
-                            args.x=contentW-containerW;
-                        }else if(args.x<0){
-                            args.x=0;
-                        }
-                        if(args.y>contentH-containerH){
-                            args.y=contentH-containerH;
-                        }else if(args.y<0){
-                            args.y=0;
-                        }        
+                    container[0].addEventListener("scroll", function () {
+
                         var distY = container[0].scrollTop,
-                            distX = args.x;
+                            distX = container[0].scrollLeft;
                         percY = distY / (contentH - containerH);
                         percX = distX / (contentW - containerW);
+
                         if (percY < 0) {
                             percY = 0;
                         } else if (percY > 1) {
@@ -70,38 +59,14 @@ return {
                         } else if (percX > 1) {
                             percX = 1;
                         }
-                        trackY.css({
-                            bottom: distY * -1 + 'px',
-                            right: distX * -1 + 'px'
-                        });
-                        trackX.css({
-                            bottom: distY * -1 + 'px',
-                            left: distX + 'px'
-                        });
+
                         bobY.css({
                             top: (containerH - bobYh) * percY + 'px'
                         });
                         bobX.css({
                             left: (containerW - bobXw) * percX + 'px'
                         });
-                        if(args){
-                            if(!args.stop && args.x!=undefined){
-                                 container[0].scrollLeft = args.x;   
-                            }
-                            
-                            if(!args.stop && args.y!=undefined){
-                                 container[0].scrollTop = args.y;   
-                            }
-                        }
-                    }
-                    container[0].addEventListener("scroll", function () {
-                        scroll({stop:true});                        
                     });
-document.getElementById('button').addEventListener("click", function () {
-   container[0].scrollTop=100; 
-});
-
-
                     if (getStyle(el[0], 'position') == "static") {
                         el.css({ position: "relative" });
                     }
@@ -116,6 +81,7 @@ document.getElementById('button').addEventListener("click", function () {
                         containerW = container[0].offsetWidth;
                         containerT = el[0].getBoundingClientRect().top;
                         contentT = content[0].getBoundingClientRect().top;
+
 
                         if (scrollDir.indexOf("y") > -1 && contentH > containerH) {
                             bobY.css({
@@ -152,9 +118,8 @@ document.getElementById('button').addEventListener("click", function () {
                                 opacity: 1
                             });
                             bobXw = bobX[0].offsetWidth;
-
                             container[0].scrollLeft = (contentW - containerW) * percX;
-                            content.css({width:'auto'});
+                            content.css({ width: 'auto' });
                             // allowX = true;
                         } else {
                             bobX.css({
@@ -166,7 +131,7 @@ document.getElementById('button').addEventListener("click", function () {
                                 opacity: 0
                             });
                             container[0].scrollLeft = 0;
-                            content.css({width:'100%'});
+                            content.css({ width: '100%' });
                             // allowX = false;
                         }
                     }
@@ -239,7 +204,7 @@ document.getElementById('button').addEventListener("click", function () {
                             distanceY = endY - startY;
                             endY = bobYt + distanceY;
                             percY = endY / (containerH - bobYh);
-                            scroll({y: (contentH - containerH) * percY});
+                            container[0].scrollTop = (contentH - containerH) * percY;
                             bobY.addClass('ng-is-scrolling');
                             angular.element(document.body).addClass('ng-scrolling');
                         }
@@ -249,7 +214,7 @@ document.getElementById('button').addEventListener("click", function () {
                             distanceX = endX - startX;
                             endX = bobXl + distanceX;
                             percX = endX / (containerW - bobXw);
-                            scroll({x:container[0].scrollLeft = (contentW - containerW) * percX});
+                            container[0].scrollLeft = (contentW - containerW) * percX;
                             bobX.addClass('ng-is-scrolling');
                             angular.element(document.body).addClass('ng-scrolling');
                         }
@@ -268,10 +233,10 @@ document.getElementById('button').addEventListener("click", function () {
                     }, false);
                     /* track clicking */
                     trackY[0].addEventListener("click", function (e) {
-                        scroll({y:(e.pageY - el[0].getBoundingClientRect().top) / containerH * (contentH - containerH)});
+                        container[0].scrollTop = ((e.pageY - el[0].getBoundingClientRect().top) / containerH * (contentH - containerH));
                     });
                     trackX[0].addEventListener("click", function (e) {
-                        scroll({x:(e.pageX - el[0].getBoundingClientRect().left) / containerW * (contentW - containerW)});
+                        container[0].scrollLeft = ((e.pageX - el[0].getBoundingClientRect().left) / containerW * (contentW - containerW));
                     });
                     /* Mouse wheel scrolling */
                     function mouseScroll(e) {
@@ -282,10 +247,9 @@ document.getElementById('button').addEventListener("click", function () {
                             offset = offset * -1;
                         }
                         if (scrollDir.indexOf("y") > -1) {
-                            scroll({y: top + (contentH - containerH) * offset});
+                            container[0].scrollTop = top + (contentH - containerH) * offset;
                         } else {
-                            scroll({x:left + (contentW - containerW) * offset});
-                        //    container[0].scrollLeft = left + (contentW - containerW) * offset;
+                            container[0].scrollLeft = left + (contentW - containerW) * offset;
                         }
                         /* Stop wheel propogation (prevent parent scrolling) */
                         if (e.preventDefault) e.preventDefault();
