@@ -127,9 +127,8 @@ return {
                                 opacity: 1
                             });
                             bobXw = bobX[0].offsetWidth;
-
                             container[0].scrollLeft = (contentW - containerW) * percX;
-
+                            content.css({width:'auto'});
                             // allowX = true;
                         } else {
                             bobX.css({
@@ -141,6 +140,7 @@ return {
                                 opacity: 0
                             });
                             container[0].scrollLeft = 0;
+                            content.css({width:'100%'});
                             // allowX = false;
                         }
                     }
