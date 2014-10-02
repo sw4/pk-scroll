@@ -1,18 +1,17 @@
+
 .ng-scrolling {
     cursor:default;
 }
-.ng-scroll-container {
+.ng-scroll-container{
+    overflow:hidden;
+}
+.ng-scroll-content {
     position:absolute;
     top:0;
     bottom:0;
     right:0;
     left:0;
     overflow:hidden;
-}
-.ng-scroll-content {
-    position:absolute;    
-    top:0;
-    left:0;
 }
 .ng-scroll-container:hover .ng-scroll-trackY, .ng-scroll-container:hover .ng-scroll-bobY, .ng-scroll-container:hover .ng-scroll-trackX, .ng-scroll-container:hover .ng-scroll-bobX {
     opacity:1;
@@ -22,7 +21,7 @@
     background:rgba(0, 0, 0, .04);
     cursor:default;
     opacity:0;
-    border-radius:10px;    
+    border-radius:10px;
     top:auto;
 }
 .ng-scroll-trackY {
