@@ -6,6 +6,7 @@ return {
             ngScroll: '@'
         },
         transclude: true,
+        /*jshint multistr: true */
         template: "<div class='ng-scroll-container'>\
         <div ng-transclude class='ng-scroll-content'></div>\
             <div class='ng-scroll-trackY'></div>\
@@ -44,7 +45,7 @@ return {
                 mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
             if (getStyle(el[0], 'position') == "static") {
                 el.css({ position: "relative" });
-            };
+            }
             function resolveDimensions() {
                 contentH = content[0].offsetHeight;
                 contentW = content[0].offsetWidth;
@@ -52,7 +53,7 @@ return {
                 containerW = container[0].offsetWidth;
                 containerT = el[0].getBoundingClientRect().top;
                 contentT = content[0].getBoundingClientRect().top;
-                if (scrollDir.indexOf("x") > -1 && contentW > containerW) {;
+                if (scrollDir.indexOf("x") > -1 && contentW > containerW) {
                     bobX.css({
                         display: 'block',
                         opacity: 1
@@ -74,7 +75,7 @@ return {
                     });
                     scrollContentX(0);
                 }
-                if (scrollDir.indexOf("y") > -1 && contentH > containerH) {;
+                if (scrollDir.indexOf("y") > -1 && contentH > containerH) {
                     bobY.css({
                         display: 'block',
                         opacity: 1
@@ -183,7 +184,7 @@ return {
                 flag = 1;
                 document.onselectstart = function () {
                     return false;
-                }
+                };
                 angular.element(document.body).addClass('ng-scrolling');
             }, false);
 
@@ -197,7 +198,7 @@ return {
                 flag = 1;
                 document.onselectstart = function () {
                     return false;
-                }
+                };
                 angular.element(document.body).addClass('ng-scrolling');
             }, false);
 
@@ -228,7 +229,7 @@ return {
                 if (flag === 1) {
                     document.onselectstart = function () {
                         return true;
-                    }
+                    };
                     angular.element(document.body).removeClass('ng-scrolling');
                     flag = 0;
                 }
@@ -247,11 +248,8 @@ return {
             }
             /* Mouse wheel scrolling */
             function mouseScroll(e) {
-
-                
-                
-                var top = parseInt(getStyle(content[0], 'top')) / (contentH - containerH) * -1,
-                    left = parseInt(getStyle(content[0], 'left')) / (contentW - containerW) * -1,
+                var top = parseInt(getStyle(content[0], 'top'),0) / (contentH - containerH) * -1,
+                    left = parseInt(getStyle(content[0], 'left'),0) / (contentW - containerW) * -1,
                 offset = 0.1;
                 if (e.wheelDelta > 0 || e.detail > 0) {
                     offset = offset * -1;
