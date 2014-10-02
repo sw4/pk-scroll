@@ -8,7 +8,7 @@ return {
                 transclude: true,
                 /*jshint multistr: true */
                 template: "<div class='ng-scroll-container'>\
-        <div class='ng-scroll-content'><div ng-transclude ></div></div>\
+        <div class='ng-scroll-content' ng-transclude></div>\
             <div class='ng-scroll-trackY'><div class='ng-scroll-bobY'></div></div>\
             <div class='ng-scroll-trackX'><div class='ng-scroll-bobX'></div></div>\
         </div>",
