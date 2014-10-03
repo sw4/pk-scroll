@@ -3,6 +3,7 @@
 }
 .ng-scroll-container {
     position:relative;
+    box-sizing:border-box;
 }
 .ng-scroll-content {
     position:absolute;
@@ -11,6 +12,7 @@
     left:0;
     right:0;
     overflow:hidden;
+    box-sizing:border-box;
 }
 .ng-scroll-container:hover .ng-scroll-trackY, .ng-scroll-container:hover .ng-scroll-bobY, .ng-scroll-container:hover .ng-scroll-trackX, .ng-scroll-container:hover .ng-scroll-bobX {
     opacity:1;
@@ -22,6 +24,7 @@
     opacity:0;
     border-radius:10px;
     top:auto;
+    box-sizing:border-box;
 }
 .ng-scroll-trackY {
     right:0;
@@ -40,6 +43,7 @@
     background:rgba(0, 0, 0, .4);
     opacity:0;
     transition:background 150ms ease-in;
+    box-sizing:border-box;
 }
 .ng-scroll-bobY:hover, .ng-scroll-bobX:hover, .ng-is-scrolling {
     background:#299983;
