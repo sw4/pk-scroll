@@ -18,4 +18,13 @@ Simply add the attribute `ng-scroll` to the element you wish to apply custom scr
 
 Depending on the desired direction of scroll, set `ng-scroll` to either `x`, `y`, or `xy`
 
-The directive supports element resizing (so if the elements dimensions change, the scrollbars automatically update) and mouse wheel movements.
+Features
+---
+
+-Automatic resize handling (change in dimensions of container or content)
+
+-Mouse wheel support
+
+-Relies on native scroll events not positional offsets
+
+-No reliance on external libraries
