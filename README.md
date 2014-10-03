@@ -5,8 +5,6 @@ Native Angular / vanilla JS custom scrollbars.
 
 **Licensed under [cc by-sa 3.0](http://creativecommons.org/licenses/by-sa/3.0/) with attribution required**
 
-Code is not optimised.
-
 Tested in Chrome, FF & IE9.
 
 [Demo can be seen here](http://sw4.github.io/ngScroll/)
