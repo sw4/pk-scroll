@@ -1,10 +1,6 @@
 .ng-scrolling {
     cursor:default;
 }
-.ng-scroll-container {
-    position:relative;
-    box-sizing:border-box;
-}
 .ng-scroll-content {
     position:absolute;
     top:0;
@@ -46,7 +42,7 @@
     box-sizing:border-box;
 }
 .ng-scroll-bobY:hover, .ng-scroll-bobX:hover, .ng-is-scrolling {
-    background:#637FD8;
+    background:#299983;
 }
 .ng-scroll-bobY {
     top:0;
