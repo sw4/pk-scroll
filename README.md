@@ -21,10 +21,10 @@ Depending on the desired direction of scroll, set `ng-scroll` to either `x`, `y`
 Features
 ---
 
--Automatic resize handling (change in dimensions of container or content)
+* Automatic resize handling (change in dimensions of container or content)
 
--Mouse wheel support
+* Mouse wheel support
 
--Relies on native scroll events not positional offsets
+* Relies on native scroll events not positional offsets
 
--No reliance on external libraries
+* No reliance on external libraries
