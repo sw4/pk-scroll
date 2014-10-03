@@ -114,19 +114,13 @@ return {
                         }
                     }
                     resolveDimensions();
-
-                    var stop = $interval(function () {
-                        var widthContainer = el[0].offsetWidth,
-                            heightContainer = el[0].offsetHeight,
-                            widthContent = content[0].offsetWidth,
-                            heightContent = content[0].offsetHeight;
-                        if ((widthContainer !== containerWidth) || (heightContainer !== containerHeight) || (widthContent !== contentWidth) || (heightContent !== contentHeight)) {
-                            containerWidth = widthContainer;
-                            containerHeight = heightContainer;
-                            contentWidth = widthContent;
-                            contentHeight = heightContent;
-                            resolveDimensions();
-                        }
+                                var widthContent = container[0].scrollWidth,
+                                    heightContent = container[0].scrollHeight;
+                                if (widthContent !== contentWidth || heightContent !== contentHeight) {                
+                                    contentWidth = widthContent;
+                                    contentHeight = heightContent;
+                                    resolveDimensions();
+                                }
                     }, 500);
                     scope.$on('$destroy', function () {
                         if (angular.isDefined(stop)) {
