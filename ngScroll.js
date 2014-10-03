@@ -1,5 +1,5 @@
 myApp.directive('ngScroll', function ($interval) {
-   return {
+return {
                 restrict: 'A',
                 replace: true,
                 scope: {
@@ -12,30 +12,26 @@ myApp.directive('ngScroll', function ($interval) {
                     <div class='ng-scroll-trackY'><div class='ng-scroll-bobY'></div></div>\
                     <div class='ng-scroll-trackX'><div class='ng-scroll-bobX'></div></div>\
                 </div>",
-                link: function (scope, el, attrs) {
-
+                link: function (scope, el) {
                     var container = el.children(),
                         children = container.children(),
                         content = angular.element(children[0]),
                         trackY = angular.element(container[1]),
                         bobY = angular.element(trackY[0].children[0]),
-                        allowY,
                         bobYh = 0,
                         bobYt = 0,
-                        bobYOffset = 0,
                         trackX = angular.element(container[2]),
                         bobX = angular.element(trackX[0].children[0]),
                         bobXw = 0,
                         bobXl = 0,
                         percY = 0,
                         percX = 0,
-                        bobXOffset = 0,
                         contentH = 0,
                         contentW = 0,
                         containerH = 0,
                         containerW = 0,
-                        containerT,
-                        contentT,
+                        bobYOffset=0,
+                        bobXOffset=0,
                         containerWidth,
                         containerHeight,
                         contentWidth,
@@ -43,24 +39,22 @@ myApp.directive('ngScroll', function ($interval) {
                         scrollDir = scope.ngScroll.toLowerCase(),
                         mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
 
-                    container[0].addEventListener("scroll", function () {
+                    function getStyle(obj, style) {
+                        var css = window.getComputedStyle(obj);
+                        return css.getPropertyValue(style);
+                    }
 
-                        var distY = container[0].scrollTop,
-                            distX = container[0].scrollLeft;
-                        percY = distY / (contentH - containerH);
-                        percX = distX / (contentW - containerW);
+                    if (getStyle(el[0], 'position') == "static") {
+                        el.css({
+                            position: "relative"
+                        });
+                    }
 
-                        if (percY < 0) {
-                            percY = 0;
-                        } else if (percY > 1) {
-                            percY = 1;
-                        }
-                        if (percX < 0) {
-                            percX = 0;
-                        } else if (percX > 1) {
-                            percX = 1;
-                        }
-
+                    bindEvent("scroll", container[0], function () {
+                        percY = container[0].scrollTop / (contentH - containerH);
+                        percX = container[0].scrollLeft / (contentW - containerW);
+                        percY = percY < 0 ? 0 : percY > 1 ? 1 : percY;
+                        percX = percX < 0 ? 0 : percX > 1 ? 1 : percX;
                         bobY.css({
                             top: (containerH - bobYh) * percY + 'px'
                         });
@@ -68,24 +62,12 @@ myApp.directive('ngScroll', function ($interval) {
                             left: (containerW - bobXw) * percX + 'px'
                         });
                     });
-                    if (getStyle(el[0], 'position') == "static") {
-                        el.css({
-                            position: "relative"
-                        });
-                    }
-
-                    function getStyle(obj, style) {
-                        var css = window.getComputedStyle(obj);
-                        return css.getPropertyValue(style);
-                    }
 
                     function resolveDimensions() {
                         contentH = container[0].scrollHeight;
                         contentW = container[0].scrollWidth;
                         containerH = el[0].offsetHeight;
                         containerW = el[0].offsetWidth;
-                        containerT = el[0].getBoundingClientRect().top;
-                        contentT = content[0].getBoundingClientRect().top;
                         if (scrollDir.indexOf("y") > -1 && contentH > containerH) {
                             bobY.css({
                                 display: 'block',
@@ -97,7 +79,6 @@ myApp.directive('ngScroll', function ($interval) {
                             });
                             bobYh = bobY[0].offsetHeight;
                             container[0].scrollTop = (contentH - containerH) * percY;
-                            allowY = true;
                         } else {
                             bobY.css({
                                 display: 'none',
@@ -108,7 +89,6 @@ myApp.directive('ngScroll', function ($interval) {
                                 opacity: 0
                             });
                             container[0].scrollTop = 0;
-                            allowY = false;
                         }
                         if (scrollDir.indexOf("x") > -1 && contentW > containerW) {
                             bobX.css({
@@ -121,8 +101,6 @@ myApp.directive('ngScroll', function ($interval) {
                             });
                             bobXw = bobX[0].offsetWidth;
                             container[0].scrollLeft = (contentW - containerW) * percX;
-                            //  content.css({width:'auto'});
-                            // allowX = true;
                         } else {
                             bobX.css({
                                 display: 'none',
@@ -133,11 +111,10 @@ myApp.directive('ngScroll', function ($interval) {
                                 opacity: 0
                             });
                             container[0].scrollLeft = 0;
-                            //     content.css({width:'100%'});
-                            // allowX = false;
                         }
                     }
                     resolveDimensions();
+
                     var stop = $interval(function () {
                         var widthContainer = el[0].offsetWidth,
                             heightContainer = el[0].offsetHeight,
@@ -149,7 +126,6 @@ myApp.directive('ngScroll', function ($interval) {
                             contentWidth = widthContent;
                             contentHeight = heightContent;
                             resolveDimensions();
-                            scope.$eval(attrs.taOnResize);
                         }
                     }, 500);
                     scope.$on('$destroy', function () {
@@ -173,33 +149,29 @@ myApp.directive('ngScroll', function ($interval) {
                         endX = 0,
                         distanceX = 0;
 
-
-                    draggableY.addEventListener("mousedown", function (e) {
+                    function dragging() {
+                        flag = 1;
+                        document.onselectstart = function () {
+                            return false;
+                        };
+                    }
+                    bindEvent("mousedown", draggableY, function (e) {
                         flag = 0, dragY = 1;
                         startY = e.pageY;
                         bobYt = bobY[0].offsetTop;
                         bobYOffset = startY - bobYt;
-                    }, false);
-                    draggableY.addEventListener("mousemove", function () {
-                        flag = 1;
-                        document.onselectstart = function () {
-                            return false;
-                        };
-                    }, false);
-                    draggableX.addEventListener("mousedown", function (e) {
+                    });
+                    bindEvent("mousedown", draggableX, function (e) {
                         flag = 0, dragX = 1;
                         startX = e.pageX;
                         bobXl = bobX[0].offsetLeft;
                         bobXOffset = startX - bobXl;
-                    }, false);
-                    draggableX.addEventListener("mousemove", function () {
-                        flag = 1;
-                        document.onselectstart = function () {
-                            return false;
-                        };
-                    }, false);
+                    });
 
-                    window.addEventListener("mousemove", function (e) {
+                    bindEvent("mousemove", draggableY, dragging);
+                    bindEvent("mousemove", draggableX, dragging);
+
+                    bindEvent("mousemove", window, function (e) {
                         if (dragY === 1) {
                             startY = bobYt;
                             endY = e.pageY - bobYOffset;
@@ -221,7 +193,7 @@ myApp.directive('ngScroll', function ($interval) {
                             angular.element(document.body).addClass('ng-scrolling');
                         }
                     });
-                    window.addEventListener("mouseup", function () {
+                    bindEvent("mouseup", window, function () {
                         dragY = 0, dragX = 0;
                         bobY.removeClass('ng-is-scrolling');
                         bobX.removeClass('ng-is-scrolling');
@@ -232,26 +204,25 @@ myApp.directive('ngScroll', function ($interval) {
                             angular.element(document.body).removeClass('ng-scrolling');
                             flag = 0;
                         }
-                    }, false);
+                    });
+
                     /* track clicking */
-                    trackY[0].addEventListener("click", function (e) {
+                    bindEvent("click", trackY[0], function (e) {
                         container[0].scrollTop = ((e.pageY - el[0].getBoundingClientRect().top) / containerH * (contentH - containerH));
                     });
-                    trackX[0].addEventListener("click", function (e) {
+                    bindEvent("click", trackX[0], function (e) {
                         container[0].scrollLeft = ((e.pageX - el[0].getBoundingClientRect().left) / containerW * (contentW - containerW));
                     });
                     /* Mouse wheel scrolling */
                     function mouseScroll(e) {
-                        var top = container[0].scrollTop,
-                            left = container[0].scrollLeft,
-                            offset = 0.1;
+                        var offset = 0.1;
                         if (e.wheelDelta > 0 || e.detail > 0) {
                             offset = offset * -1;
                         }
                         if (scrollDir.indexOf("y") > -1) {
-                            container[0].scrollTop = top + (contentH - containerH) * offset;
+                            container[0].scrollTop = container[0].scrollTop + (contentH - containerH) * offset;
                         } else {
-                            container[0].scrollLeft = left + (contentW - containerW) * offset;
+                            container[0].scrollLeft = container[0].scrollLeft + (contentW - containerW) * offset;
                         }
                         /* Stop wheel propogation (prevent parent scrolling) */
                         if (e.preventDefault) e.preventDefault();
@@ -260,10 +231,16 @@ myApp.directive('ngScroll', function ($interval) {
                         e.returnValue = false; // IE events
                         return false;
                     }
-                    if (container[0].attachEvent) //if IE (and Opera depending on user setting)
-                        container[0].attachEvent("on" + mousewheelevt, mouseScroll);
-                    else if (container[0].addEventListener) //WC3 browsers
-                        container[0].addEventListener(mousewheelevt, mouseScroll, false);
+                    bindEvent(mousewheelevt, container[0], mouseScroll);
+
+                    function bindEvent(ev, elem, fn) {
+                        if (elem.addEventListener) {
+                            elem.addEventListener(ev, fn, false);
+                        } else {
+                            elem.attachEvent("on" + ev, fn);
+                        }
+                    }
+
                 }
             };
 });
