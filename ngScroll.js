@@ -1,5 +1,5 @@
 myApp.directive('ngScroll', function ($interval) {
-return {
+   return {
         restrict: 'A',
         replace: true,
         scope: {
@@ -264,5 +264,6 @@ return {
             container[0].attachEvent("on" + mousewheelevt, mouseScroll);
             else if (container[0].addEventListener) //WC3 browsers
             container[0].addEventListener(mousewheelevt, mouseScroll, false);
-        };
+        }
+    };
 });
