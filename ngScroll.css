@@ -1,16 +1,15 @@
-
 .ng-scrolling {
     cursor:default;
 }
-.ng-scroll-container{
-    overflow:hidden;
+.ng-scroll-container {
+    position:relative;
 }
 .ng-scroll-content {
     position:absolute;
     top:0;
     bottom:0;
-    right:0;
     left:0;
+    right:0;
     overflow:hidden;
 }
 .ng-scroll-container:hover .ng-scroll-trackY, .ng-scroll-container:hover .ng-scroll-bobY, .ng-scroll-container:hover .ng-scroll-trackX, .ng-scroll-container:hover .ng-scroll-bobX {
