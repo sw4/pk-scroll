@@ -29,9 +29,11 @@ return {
                         containerH = 0,
                         containerW = 0,
                         floatYOffset=0,
-                        floatXOffset=0,
-                        contentWidth,
-                        contentHeight,
+                        floatXOffset = 0,
+                        contentWidth = 0,
+                        contentHeight = 0,
+                        containerWidth = 0,
+                        containerHeight = 0,
                         scrollDir = scope.ngScroll.toLowerCase(),
                         mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
 
@@ -112,11 +114,15 @@ return {
                     resolveDimensions();
 
                     var stop = $interval(function () {
-                        var widthContent = container[0].scrollWidth,
+                        var widthContainer = el[0].offsetWidth,
+                            heightContainer = el[0].offsetHeight,
+                            widthContent = container[0].scrollWidth,
                             heightContent = container[0].scrollHeight;
-                        if (widthContent !== contentWidth || heightContent !== contentHeight) {
+                        if (widthContainer !== containerWidth || heightContainer !== containerHeight || widthContent !== contentWidth || heightContent !== contentHeight) {
                             contentWidth = widthContent;
                             contentHeight = heightContent;
+                            containerWidth = widthContainer;
+                            containerHeight = heightContainer;
                             resolveDimensions();
                         }
                     }, 500);
