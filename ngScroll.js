@@ -1,5 +1,9 @@
-myApp.directive('ngScroll', function ($interval) {
-return {
+'use strict';
+(
+function () {
+    angular.module( 'ng-scroll', ['ng'] )
+        .directive('ngScroll', function ($interval) {
+            return {
                 restrict: 'A',
                 replace: true,
                 scope: {
@@ -241,4 +245,6 @@ return {
 
                 }
             };
-});
+        });
+}
+)();
