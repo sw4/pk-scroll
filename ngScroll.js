@@ -9,31 +9,27 @@ return {
                 /*jshint multistr: true */
                 template: "<div class='ng-scroll-container'>\
                     <div class='ng-scroll-content' ng-transclude></div>\
-                    <div class='ng-scroll-trackY'><div class='ng-scroll-bobY'></div></div>\
-                    <div class='ng-scroll-trackX'><div class='ng-scroll-bobX'></div></div>\
+                    <div class='ng-scroll-trackY'><div class='ng-scroll-floatY'></div></div>\
+                    <div class='ng-scroll-trackX'><div class='ng-scroll-floatX'></div></div>\
                 </div>",
                 link: function (scope, el) {
                     var container = el.children(),
-                        children = container.children(),
-                        content = angular.element(children[0]),
                         trackY = angular.element(container[1]),
-                        bobY = angular.element(trackY[0].children[0]),
-                        bobYh = 0,
-                        bobYt = 0,
+                        floatY = angular.element(trackY[0].children[0]),
+                        floatYh = 0,
+                        floatYt = 0,
                         trackX = angular.element(container[2]),
-                        bobX = angular.element(trackX[0].children[0]),
-                        bobXw = 0,
-                        bobXl = 0,
+                        floatX = angular.element(trackX[0].children[0]),
+                        floatXw = 0,
+                        floatXl = 0,
                         percY = 0,
                         percX = 0,
                         contentH = 0,
                         contentW = 0,
                         containerH = 0,
                         containerW = 0,
-                        bobYOffset=0,
-                        bobXOffset=0,
-                        containerWidth,
-                        containerHeight,
+                        floatYOffset=0,
+                        floatXOffset=0,
                         contentWidth,
                         contentHeight,
                         scrollDir = scope.ngScroll.toLowerCase(),
@@ -55,11 +51,11 @@ return {
                         percX = container[0].scrollLeft / (contentW - containerW);
                         percY = percY < 0 ? 0 : percY > 1 ? 1 : percY;
                         percX = percX < 0 ? 0 : percX > 1 ? 1 : percX;
-                        bobY.css({
-                            top: (containerH - bobYh) * percY + 'px'
+                        floatY.css({
+                            top: (containerH - floatYh) * percY + 'px'
                         });
-                        bobX.css({
-                            left: (containerW - bobXw) * percX + 'px'
+                        floatX.css({
+                            left: (containerW - floatXw) * percX + 'px'
                         });
                     });
 
@@ -69,7 +65,7 @@ return {
                         containerH = el[0].offsetHeight;
                         containerW = el[0].offsetWidth;
                         if (scrollDir.indexOf("y") > -1 && contentH > containerH) {
-                            bobY.css({
+                            floatY.css({
                                 display: 'block',
                                 opacity: 1
                             });
@@ -77,10 +73,10 @@ return {
                                 display: 'block',
                                 opacity: 1
                             });
-                            bobYh = bobY[0].offsetHeight;
+                            floatYh = floatY[0].offsetHeight;
                             container[0].scrollTop = (contentH - containerH) * percY;
                         } else {
-                            bobY.css({
+                            floatY.css({
                                 display: 'none',
                                 opacity: 0
                             });
@@ -91,7 +87,7 @@ return {
                             container[0].scrollTop = 0;
                         }
                         if (scrollDir.indexOf("x") > -1 && contentW > containerW) {
-                            bobX.css({
+                            floatX.css({
                                 display: 'block',
                                 opacity: 1
                             });
@@ -99,10 +95,10 @@ return {
                                 display: 'block',
                                 opacity: 1
                             });
-                            bobXw = bobX[0].offsetWidth;
+                            floatXw = floatX[0].offsetWidth;
                             container[0].scrollLeft = (contentW - containerW) * percX;
                         } else {
-                            bobX.css({
+                            floatX.css({
                                 display: 'none',
                                 opacity: 0
                             });
@@ -114,13 +110,15 @@ return {
                         }
                     }
                     resolveDimensions();
-                                var widthContent = container[0].scrollWidth,
-                                    heightContent = container[0].scrollHeight;
-                                if (widthContent !== contentWidth || heightContent !== contentHeight) {                
-                                    contentWidth = widthContent;
-                                    contentHeight = heightContent;
-                                    resolveDimensions();
-                                }
+
+                    var stop = $interval(function () {
+                        var widthContent = container[0].scrollWidth,
+                            heightContent = container[0].scrollHeight;
+                        if (widthContent !== contentWidth || heightContent !== contentHeight) {
+                            contentWidth = widthContent;
+                            contentHeight = heightContent;
+                            resolveDimensions();
+                        }
                     }, 500);
                     scope.$on('$destroy', function () {
                         if (angular.isDefined(stop)) {
@@ -134,8 +132,8 @@ return {
                     var flag = 0,
                         dragY = 0,
                         dragX = 0,
-                        draggableY = bobY[0],
-                        draggableX = bobX[0],
+                        draggableY = floatY[0],
+                        draggableX = floatX[0],
                         startY = 0,
                         endY = 0,
                         distanceY = 0,
@@ -152,14 +150,14 @@ return {
                     bindEvent("mousedown", draggableY, function (e) {
                         flag = 0, dragY = 1;
                         startY = e.pageY;
-                        bobYt = bobY[0].offsetTop;
-                        bobYOffset = startY - bobYt;
+                        floatYt = floatY[0].offsetTop;
+                        floatYOffset = startY - floatYt;
                     });
                     bindEvent("mousedown", draggableX, function (e) {
                         flag = 0, dragX = 1;
                         startX = e.pageX;
-                        bobXl = bobX[0].offsetLeft;
-                        bobXOffset = startX - bobXl;
+                        floatXl = floatX[0].offsetLeft;
+                        floatXOffset = startX - floatXl;
                     });
 
                     bindEvent("mousemove", draggableY, dragging);
@@ -167,30 +165,30 @@ return {
 
                     bindEvent("mousemove", window, function (e) {
                         if (dragY === 1) {
-                            startY = bobYt;
-                            endY = e.pageY - bobYOffset;
+                            startY = floatYt;
+                            endY = e.pageY - floatYOffset;
                             distanceY = endY - startY;
-                            endY = bobYt + distanceY;
-                            percY = endY / (containerH - bobYh);
+                            endY = floatYt + distanceY;
+                            percY = endY / (containerH - floatYh);
                             container[0].scrollTop = (contentH - containerH) * percY;
-                            bobY.addClass('ng-is-scrolling');
+                            floatY.addClass('ng-is-scrolling');
                             angular.element(document.body).addClass('ng-scrolling');
                         }
                         if (dragX === 1) {
-                            startX = bobXl;
-                            endX = e.pageX - bobXOffset;
+                            startX = floatXl;
+                            endX = e.pageX - floatXOffset;
                             distanceX = endX - startX;
-                            endX = bobXl + distanceX;
-                            percX = endX / (containerW - bobXw);
+                            endX = floatXl + distanceX;
+                            percX = endX / (containerW - floatXw);
                             container[0].scrollLeft = (contentW - containerW) * percX;
-                            bobX.addClass('ng-is-scrolling');
+                            floatX.addClass('ng-is-scrolling');
                             angular.element(document.body).addClass('ng-scrolling');
                         }
                     });
                     bindEvent("mouseup", window, function () {
                         dragY = 0, dragX = 0;
-                        bobY.removeClass('ng-is-scrolling');
-                        bobX.removeClass('ng-is-scrolling');
+                        floatY.removeClass('ng-is-scrolling');
+                        floatX.removeClass('ng-is-scrolling');
                         if (flag === 1) {
                             document.onselectstart = function () {
                                 return true;
