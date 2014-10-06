@@ -26,8 +26,8 @@ function () {
                 floatX = angular.element(trackX[0].children[0]),
                 floatXw = 0,
                 floatXl = 0,
-                allowY=false,
-                allowX=false,
+                allowY = false,
+                allowX = false,
                 percY = 0,
                 percX = 0,
                 contentH = 0,
@@ -42,8 +42,8 @@ function () {
                 containerHeight = 0,
                 scrollDir = scope.ngScroll.toLowerCase(),
                 mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
-        
-           
+
+
             function getStyle(obj, style) {
                 var css = window.getComputedStyle(obj);
                 return css.getPropertyValue(style);
@@ -82,7 +82,7 @@ function () {
                         display: 'block',
                         opacity: 1
                     });
-                    allowY=true;
+                    allowY = true;
                     floatYh = floatY[0].offsetHeight;
                     container[0].scrollTop = (contentH - containerH) * percY;
                 } else {
@@ -94,7 +94,7 @@ function () {
                         display: 'none',
                         opacity: 0
                     });
-                    allowY=false;
+                    allowY = false;
                     container[0].scrollTop = 0;
                 }
                 if (scrollDir.indexOf("x") > -1 && contentW > containerW) {
@@ -106,7 +106,7 @@ function () {
                         display: 'block',
                         opacity: 1
                     });
-                    allowX=true;
+                    allowX = true;
                     floatXw = floatX[0].offsetWidth;
                     container[0].scrollLeft = (contentW - containerW) * percX;
                 } else {
@@ -118,7 +118,7 @@ function () {
                         display: 'none',
                         opacity: 0
                     });
-                    allowX=false;
+                    allowX = false;
                     container[0].scrollLeft = 0;
                 }
             }
@@ -189,8 +189,8 @@ function () {
                     endY = floatYt + distanceY;
                     percY = endY / (containerH - floatYh);
                     container[0].scrollTop = (contentH - containerH) * percY;
-                    floatY.addClass('ng-is-scrolling');
-                    angular.element(document.body).addClass('ng-scrolling');
+                    floatY.addClass('ng-scroll-dragging');
+                    angular.element(document.body).addClass('ng-scroll-scrolling');
                 }
                 if (dragX === 1) {
                     startX = floatXl;
@@ -199,19 +199,19 @@ function () {
                     endX = floatXl + distanceX;
                     percX = endX / (containerW - floatXw);
                     container[0].scrollLeft = (contentW - containerW) * percX;
-                    floatX.addClass('ng-is-scrolling');
-                    angular.element(document.body).addClass('ng-scrolling');
+                    floatX.addClass('ng-scroll-dragging');
+                    angular.element(document.body).addClass('ng-scroll-scrolling');
                 }
             });
             bindEvent("mouseup", window, function () {
                 dragY = 0, dragX = 0;
-                floatY.removeClass('ng-is-scrolling');
-                floatX.removeClass('ng-is-scrolling');
+                floatY.removeClass('ng-scroll-dragging');
+                floatX.removeClass('ng-scroll-dragging');
                 if (flag === 1) {
                     document.onselectstart = function () {
                         return true;
                     };
-                    angular.element(document.body).removeClass('ng-scrolling');
+                    angular.element(document.body).removeClass('ng-scroll-scrolling');
                     flag = 0;
                 }
             });
@@ -237,8 +237,8 @@ function () {
                 /* Stop wheel propogation (prevent parent scrolling) */
                 preventBubble(e);
             }
-    
-            function preventBubble(e){
+
+            function preventBubble(e) {
                 if (e.preventDefault) e.preventDefault();
                 if (e.stopPropagation) e.stopPropagation();
                 e.cancelBubble = true; // IE events
@@ -312,53 +312,53 @@ function () {
             Keyboard events
             */
             container[0].setAttribute("tabindex", 0);
-            bindEvent('keydown', container[0], function(e){
-                
-                switch(e.keyCode){
+            bindEvent('keydown', container[0], function (e) {
+
+                switch (e.keyCode) {
                     case 38:
                         //up cursor
-                        if(!allowY) return;
-                        container[0].scrollTop-=containerH*.1
+                        if (!allowY) return;
+                        container[0].scrollTop -= containerH * .1
                         break;
                     case 40:
                         //down cursor
-                        if(!allowY) return;
-                        container[0].scrollTop+=containerH*.1
+                        if (!allowY) return;
+                        container[0].scrollTop += containerH * .1
                         break;
                     case 37:
                         //left cursor
-                        if(!allowX) return;
-                        container[0].scrollLeft-=containerW*.1
+                        if (!allowX) return;
+                        container[0].scrollLeft -= containerW * .1
                         break;
                     case 39:
                         //right cursor
-                        if(!allowX) return;
-                        container[0].scrollLeft+=containerW*.1
+                        if (!allowX) return;
+                        container[0].scrollLeft += containerW * .1
                         break;
                     case 33:
                         //page up
-                        if(!allowY) return;
-                        container[0].scrollTop-=containerH;
+                        if (!allowY) return;
+                        container[0].scrollTop -= containerH;
                         break;
                     case 34:
                         //page down
-                        if(!allowY) return;
-                        container[0].scrollTop+=containerH;
+                        if (!allowY) return;
+                        container[0].scrollTop += containerH;
                         break;
                     case 36:
                         //home
-                        if(!allowY) return;
-                        container[0].scrollTop=0;
+                        if (!allowY) return;
+                        container[0].scrollTop = 0;
                         break;
                     case 35:
                         //end
-                        if(!allowY) return;
-                        container[0].scrollTop=contentH;                
+                        if (!allowY) return;
+                        container[0].scrollTop = contentH;
                         break;
                 };
                 preventBubble(e);
             });
-    
+
             function bindEvent(ev, elem, fn) {
                 if (elem.addEventListener) {
                     elem.addEventListener(ev, fn, false);
