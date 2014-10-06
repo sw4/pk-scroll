@@ -23,6 +23,8 @@ Features
 
 * Mobile touch / drag support
 
+* Keyboard support
+
 * Mouse wheel support
 
 * Relies on native scroll events not positional offsets
