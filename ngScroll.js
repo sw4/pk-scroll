@@ -157,6 +157,7 @@ function () {
                             return false;
                         };
                     }
+    
                     bindEvent("mousedown", draggableY, function (e) {
                         flag = 0, dragY = 1;
                         startY = e.pageY;
@@ -234,6 +235,58 @@ function () {
                         return false;
                     }
                     bindEvent(mousewheelevt, container[0], mouseScroll);
+
+
+                    function getXY(e) {
+                        // touch event
+                        if (e.targetTouches && (e.targetTouches.length >= 1)) {
+                            return {x: e.targetTouches[0].clientX, y:e.targetTouches[0].clientY};
+                        }
+                        // mouse event
+                        return {x:e.clientX, y:e.clientY};
+                    }
+
+                    var pressed = false, startPos={};
+                    function tap(e, axis) {
+                        pressed = true;
+                        startPos = getXY(e);
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                    function release(e) {
+                        pressed = false;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                    function drag(e) {
+                        var endPos, deltaX, deltaY;
+                        if (pressed) {
+                            endPos = getXY(e);
+                            deltaY = startPos.y - endPos.y;                            
+                            deltaX = startPos.x - endPos.x;
+                            if (deltaY > 2 || deltaY < -2) {   
+                                startPos.y = endPos.y;                                 
+                                container[0].scrollTop += deltaY; 
+                                
+                            }                            
+                            if (deltaX > 2 || deltaX < -2) {
+                                startPos.x = endPos.x;
+                                container[0].scrollLeft += deltaX; 
+                            }
+                        }
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+
+                    /* Touch mobile events */
+                    if (typeof window.ontouchstart !== 'undefined') {
+                        bindEvent('touchstart', container[0], tap);
+                        bindEvent('touchmove', container[0], drag);
+                        bindEvent('touchend', window, release);
+                    }
 
                     function bindEvent(ev, elem, fn) {
                         if (elem.addEventListener) {
