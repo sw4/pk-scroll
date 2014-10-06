@@ -22,7 +22,7 @@ Features
 * Automatic resize handling (change in dimensions of container or content)
 
 * Mobile touch / drag support
-* 
+
 * Mouse wheel support
 
 * Relies on native scroll events not positional offsets
