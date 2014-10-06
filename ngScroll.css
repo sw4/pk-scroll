@@ -1,6 +1,9 @@
 .ng-scrolling {
     cursor:default;
 }
+.ng-scroll-content:focus, .ng-scroll-content:active {
+    outline:0;
+}
 .ng-scroll-content {
     position:absolute;
     top:0;
