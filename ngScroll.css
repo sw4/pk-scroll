@@ -1,8 +1,8 @@
-.ng-scrolling {
-    cursor:default;
-}
 .ng-scroll-content:focus, .ng-scroll-content:active {
     outline:0;
+}
+.ng-scroll-scrolling {
+    cursor:default;
 }
 .ng-scroll-content {
     position:absolute;
@@ -44,7 +44,7 @@
     transition:background 150ms ease-in;
     box-sizing:border-box;
 }
-.ng-scroll-floatY:hover, .ng-scroll-floatX:hover, .ng-is-scrolling {
+.ng-scroll-floatY:hover, .ng-scroll-floatX:hover, .ng-scroll-dragging {
     background:#299983;
 }
 .ng-scroll-floatY {
