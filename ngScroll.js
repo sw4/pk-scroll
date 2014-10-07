@@ -11,11 +11,14 @@ function () {
                 },
                 transclude: true,
                 /*jshint multistr: true */
-                template: "<div class='ng-scroll-container'>\
-                    <div class='ng-scroll-content' ng-transclude></div>\
+				template: function( element) {
+					var tag = element[0].nodeName;
+					return "<div  class='ng-scroll-container'>\
+                    <"+tag+" class='ng-scroll-content' ng-transclude></"+tag+">\
                     <div class='ng-scroll-trackY'><div class='ng-scroll-floatY'></div></div>\
                     <div class='ng-scroll-trackX'><div class='ng-scroll-floatX'></div></div>\
-                </div>",
+				</div>";
+				},
                 link: function (scope, el) {
                     var container = el.children(),
                         trackY = angular.element(container[1]),
