@@ -22,6 +22,7 @@
     cursor: default;
     border-radius: 10px;
     top: auto;
+    display:none;
     box-sizing: border-box;
 }
 
