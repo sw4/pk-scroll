@@ -17,15 +17,15 @@ Firstly, add the attribute `pk-scroll` and set to either `x`, `y`, or `xy` on th
 Then, there are 3 ways to initiate pk-scroll.
 
 
-Plain Javascript#####
+#####Plain Javascript
 
 `pk.scroll(document.getElementById('yourEl'));`
 
-jQuery#####
+#####jQuery
 
 `$('yourEl').pkScroll();`
 
-Angular#####
+#####Angular
 
 Simply include `pk-scroll` as an application dependancy and the `pkScroll` directive will automatically apply.
 
