@@ -14,15 +14,21 @@ Usage
 
 Firstly, add the attribute `pk-scroll` and set to either `x`, `y`, or `xy` on the relevant element.
 
-Then, there are 3 ways to initiaye pk-scroll.
+Then, there are 3 ways to initiate pk-scroll.
 
-- Directly on the DOM node using JavaScript:
-e.g: `pk.scroll(document.getElementById('yourEl'));`
 
-- Using the jQuery method `pkScroll()`:
-e.g: `$('yourEl').pkScroll();`
+Plain Javascript#####
 
-- Using the `pkScroll` angular.js directive hooked into the `pk-scroll` attribute (automatically applied on elements the attribute is detected on, simply include `pk-scroll` as an application dependancy)
+`pk.scroll(document.getElementById('yourEl'));`
+
+jQuery#####
+
+`$('yourEl').pkScroll();`
+
+Angular#####
+
+Simply include `pk-scroll` as an application dependancy and the `pkScroll` directive will automatically apply.
+
 
 Features
 ---
