@@ -16,15 +16,13 @@ Firstly, add the attribute `pk-scroll` and set to either `x`, `y`, or `xy` on th
 
 Then, there are 3 ways to initiaye pk-scroll.
 
-# Directly on the DOM node using JavaScript:
+- Directly on the DOM node using JavaScript:
+e.g: `pk.scroll(document.getElementById('yourEl'));`
 
-   e.g: `pk.scroll(document.getElementById('yourEl'));`
+- Using the jQuery method `pkScroll()`:
+e.g: `$('yourEl').pkScroll();`
 
-# Using the jQuery method `pkScroll()`:
-
-   e.g: `$('yourEl').pkScroll();`
-
-# Using the `pkScroll` angular.js directive hooked into the `pk-scroll` attribute (automatically applied on elements the attribute is detected on, simply include `pk-scroll` as an application dependancy)
+- Using the `pkScroll` angular.js directive hooked into the `pk-scroll` attribute (automatically applied on elements the attribute is detected on, simply include `pk-scroll` as an application dependancy)
 
 Features
 ---
