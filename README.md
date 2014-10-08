@@ -21,7 +21,7 @@ Then, there are 3 ways to initiate pk-scroll.
 
 `pk.scroll(document.getElementById('yourEl'));`*
 
-*<sup>You can use any means to retrieve a DOM note to pass to `pk.scroll()`</sup>
+*<sup>You can use any means to retrieve a DOM node to pass to `pk.scroll()`</sup>
 
 #####jQuery
 
