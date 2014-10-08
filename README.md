@@ -19,7 +19,9 @@ Then, there are 3 ways to initiate pk-scroll.
 
 #####Plain Javascript
 
-`pk.scroll(document.getElementById('yourEl'));`
+`pk.scroll(document.getElementById('yourEl'));`*
+
+*<sup>You can use any means to retrieve a DOM note to pass to `pk.scroll()`</sup>
 
 #####jQuery
 
