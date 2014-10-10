@@ -12,7 +12,7 @@ Customized scrollbars written in vanilla JS, complete with jQuery and angular wr
 
 ###Requires
 
-`pk-base.js` and `pk-base.css` as a precursor
+`pk-base.js` and `pk-base.css` as well as `pk-draggable.js` and `pk-draggable.css` as a precursor
 
 ###Features
 
