@@ -1,4 +1,3 @@
-
 var pk = pk || {};
 (function (pk) {
     // HELPERS FOR jQUERY+ANGULAR
@@ -6,28 +5,35 @@ var pk = pk || {};
         // jquery available
         jQuery.fn.extend({
             pkScroll: function (axis) {
-                pk.scroll({element:this[0], axis:axis});
+                pk.scroll({
+                    element: this[0],
+                    axis: axis
+                });
             }
         });
     }
     if (typeof angular !== 'undefined') {
         // angular available
         (
+
         function () {
             angular.module('pk-scroll', ['ng'])
                 .directive('pkScroll', function () {
                 return {
                     restrict: 'A',
                     link: function (scope, el) {
-                        pk.scroll({element:el[0], axis:el[0].getAttribute('pk-scroll')});
+                        pk.scroll({
+                            element: el[0],
+                            axis: el[0].getAttribute('pk-scroll')
+                        });
                     }
                 };
             });
         })();
-    }    
+    }
     pk.scroll = function (opt) {
         if (!opt.axis) return;
-        var el=opt.element;
+        var el = opt.element;
         // INIT SCROLL STRUCTURE
         pk.addClass(el, 'pk-scroll-container');
         var container = document.createElement(el.nodeName);
@@ -127,72 +133,45 @@ var pk = pk || {};
 
 
         // DRAG HANDLERS
-        var flag = 0,
-            dragY = 0,
-            dragX = 0,
-            draggableY = floatY,
-            draggableX = floatX,
-            startY = 0,
-            endY = 0,
-            distanceY = 0,
-            startX = 0,
-            endX = 0,
-            distanceX = 0;
 
-        function dragging() {
-            flag = 1;
-            document.onselectstart = function () {
-                return false;
-            };
+        if(allowY){
+            pk.draggable({
+                element: floatY,
+                move: {
+                    y: true
+                },
+                container: {
+                    element: trackY
+                },
+                listeners: {
+                    dragging: function () {
+                        container.scrollTop = (contentH - containerH) * (floatY.offsetTop / (trackY.offsetHeight - floatY.offsetHeight));
+                    }
+                }
+            });
         }
-        pk.bindEvent("mousedown", draggableY, function (e) {
-            flag = 0, dragY = 1;
-            startY = e.pageY;
-            floatYt = floatY.offsetTop;
-            floatYOffset = startY - floatYt;
+        if(allowX){
+            pk.draggable({
+                element: floatX,
+                move: {
+                    x: true
+                },
+                container: {
+                    element: trackX
+                },
+                listeners: {
+                    dragging: function () {
+    
+                        container.scrollLeft = (contentW - containerW) * (floatX.offsetLeft / (trackX.offsetWidth - floatY.offsetWidth));
+                    }
+                }
+            });
+        }
+        pk.bindEvent("click", floatY, function (e) {
+            pk.preventBubble(e);
         });
-        pk.bindEvent("mousedown", draggableX, function (e) {
-            flag = 0, dragX = 1;
-            startX = e.pageX;
-            floatXl = floatX.offsetLeft;
-            floatXOffset = startX - floatXl;
-        });
-
-        pk.bindEvent("mousemove", draggableY, dragging);
-        pk.bindEvent("mousemove", draggableX, dragging);
-        pk.bindEvent("mousemove", window, function (e) {
-            if (dragY === 1) {
-                startY = floatYt;
-                endY = e.pageY - floatYOffset;
-                distanceY = endY - startY;
-                endY = floatYt + distanceY;
-                percY = endY / (containerH - floatYh);
-                container.scrollTop = (contentH - containerH) * percY;
-                pk.addClass(floatY, 'pk-scroll-dragging');
-                pk.addClass(document.body, 'pk-noselect');
-            }
-            if (dragX === 1) {
-                startX = floatXl;
-                endX = e.pageX - floatXOffset;
-                distanceX = endX - startX;
-                endX = floatXl + distanceX;
-                percX = endX / (containerW - floatXw);
-                container.scrollLeft = (contentW - containerW) * percX;
-                pk.addClass(floatX, 'pk-scroll-dragging');
-                pk.addClass(document.body, 'pk-noselect');
-            }
-        });
-        pk.bindEvent("mouseup", window, function () {
-            dragY = 0, dragX = 0;
-            pk.removeClass(floatY, 'pk-scroll-dragging');
-            pk.removeClass(floatX, 'pk-scroll-dragging');
-            if (flag === 1) {
-                document.onselectstart = function () {
-                    return true;
-                };
-                pk.removeClass(document.body, 'pk-noselect');
-                flag = 0;
-            }
+        pk.bindEvent("click", floatX, function (e) {
+            pk.preventBubble(e);
         });
 
         // TRACK CLICKING HANDLERS
@@ -209,7 +188,7 @@ var pk = pk || {};
             if (e.wheelDelta > 0 || e.detail > 0) {
                 offset = offset * -1;
             }
-            if (scrollDir.indexOf("y") > -1) {
+            if (allowY) {
                 container.scrollTop = container.scrollTop + (contentH - containerH) * offset;
             } else {
                 container.scrollLeft = container.scrollLeft + (contentW - containerW) * offset;
