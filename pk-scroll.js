@@ -5,7 +5,7 @@ var pk = pk || {};
     if (typeof jQuery !== 'undefined') {
         // jquery available
         jQuery.fn.extend({
-            pk-scroll: function (axis) {
+            pkScroll: function (axis) {
                 pk.scroll({element:this[0], axis:axis});
             }
         });
