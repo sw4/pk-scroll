@@ -7,6 +7,8 @@ Customized scrollbars written in vanilla JS, complete with jQuery and angular wr
 
 **Licensed under [cc by-sa 3.0](http://creativecommons.org/licenses/by-sa/3.0/) with attribution required**
 
+#####[Demo](http://sw4.github.io/pk-scroll/)
+
 
 ###Requires
 
