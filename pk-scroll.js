@@ -1,76 +1,46 @@
-// HELPERS FOR jQUERY+ANGULAR
-if (typeof jQuery !== 'undefined') {
-    // jquery available
-    jQuery.fn.extend({
-        pkScroll: function () {
-            pk.scroll(this[0]);
-        }
-    });
-}
-if (typeof angular !== 'undefined') {
-    // angular available
-    'use strict';
-    (
-    function () {
-        angular.module('pk-scroll', ['ng'])
-            .directive('pkScroll', function () {
-            return {
-                restrict: 'A',
-                link: function (scope, el) {
-                    pk.scroll(el[0]);
-                }
-            };
-        });
-    })();
-}
-// MAIN PK SCROLL DECLARATION
+
 var pk = pk || {};
 (function (pk) {
+    // HELPERS FOR jQUERY+ANGULAR
+    if (typeof jQuery !== 'undefined') {
+        // jquery available
+        jQuery.fn.extend({
+            pkScroll: function () {
+                pk.scroll(this[0]);
+            }
+        });
+    }
+    if (typeof angular !== 'undefined') {
+        // angular available
+        (
+        function () {
+            angular.module('pk-scroll', ['ng'])
+                .directive('pkScroll', function () {
+                return {
+                    restrict: 'A',
+                    link: function (scope, el) {
+                        pk.scroll(el[0]);
+                    }
+                };
+            });
+        })();
+    }    
     pk.scroll = function (el) {
         if (!el.getAttribute('pk-scroll')) return;
 
-        // HELPER FUNCTIONS
-
-        function getStyle(obj, style) {
-            var css = window.getComputedStyle(obj);
-            return css.getPropertyValue(style);
-        }
-
-        function addClass(thisEl, cssClass) {
-            var cssClasses = thisEl.getAttribute('class');
-            cssClasses = cssClasses || '';
-            if (cssClasses && cssClasses.indexOf(cssClass) > -1) return;
-            thisEl.setAttribute('class', (cssClasses ? cssClasses + ' ' : '') + cssClass);
-            return thisEl;
-        };
-
-        function removeClass(thisEl, cssClass) {
-            var cssClasses = thisEl.getAttribute('class');
-            if (!cssClasses) return;
-            thisEl.setAttribute('class', cssClasses.replace(cssClass, ''));
-            return thisEl;
-        };
-
-        function bindEvent(ev, thisEl, fn) {
-            if (thisEl.addEventListener) {
-                thisEl.addEventListener(ev, fn, false);
-            } else {
-                thisEl.attachEvent("on" + ev, fn);
-            }
-        }
         // INIT SCROLL STRUCTURE
-        addClass(el, 'pk-scroll-container');
+        pk.addClass(el, 'pk-scroll-container');
         var container = document.createElement(el.nodeName);
-        addClass(container, 'pk-scroll-content').innerHTML = el.innerHTML;
+        pk.addClass(container, 'pk-scroll-content').innerHTML = el.innerHTML;
         var trackY = document.createElement('div');
-        addClass(trackY, 'pk-scroll-trackY');
+        pk.addClass(trackY, 'pk-scroll-trackY');
         var floatY = document.createElement('div');
-        addClass(floatY, 'pk-scroll-floatY');
+        pk.addClass(floatY, 'pk-scroll-floatY');
         trackY.appendChild(floatY);
         var trackX = document.createElement('div');
-        addClass(trackX, 'pk-scroll-trackX');
+        pk.addClass(trackX, 'pk-scroll-trackX');
         var floatX = document.createElement('div');
-        addClass(floatX, 'pk-scroll-floatX');
+        pk.addClass(floatX, 'pk-scroll-floatX');
         trackX.appendChild(floatX);
         el.innerHTML = '';
         el.appendChild(container);
@@ -101,9 +71,9 @@ var pk = pk || {};
             scrollDir = el.getAttribute('pk-scroll').toLowerCase(),
             mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x  
 
-        if (getStyle(el, 'position') == "static") el.style.position = "relative";
+        if (pk.getStyle(el, 'position') == "static") el.style.position = "relative";
 
-        bindEvent("scroll", container, function () {
+        pk.bindEvent("scroll", container, function () {
             percY = container.scrollTop / (contentH - containerH);
             percX = container.scrollLeft / (contentW - containerW);
             percY = percY < 0 ? 0 : percY > 1 ? 1 : percY;
@@ -119,22 +89,22 @@ var pk = pk || {};
             containerW = el.offsetWidth;
             if (scrollDir.indexOf("y") > -1 && contentH > containerH) {
                 allowY = true;
-                addClass(el, 'pk-scroll-enableY');
+                pk.addClass(el, 'pk-scroll-enableY');
                 floatYh = floatY.offsetHeight;
                 container.scrollTop = (contentH - containerH) * percY;
             } else {
                 allowY = false;
-                removeClass(el, 'pk-scroll-enableY');
+                pk.removeClass(el, 'pk-scroll-enableY');
                 container.scrollTop = 0;
             }
             if (scrollDir.indexOf("x") > -1 && contentW > containerW) {
                 allowX = true;
-                addClass(el, 'pk-scroll-enableX');
+                pk.addClass(el, 'pk-scroll-enableX');
                 floatXw = floatX.offsetWidth;
                 container.scrollLeft = (contentW - containerW) * percX;
             } else {
                 allowX = false;
-                removeClass(el, 'pk-scroll-enableX');
+                pk.removeClass(el, 'pk-scroll-enableX');
                 container.scrollLeft = 0;
             }
         }
@@ -175,22 +145,22 @@ var pk = pk || {};
                 return false;
             };
         }
-        bindEvent("mousedown", draggableY, function (e) {
+        pk.bindEvent("mousedown", draggableY, function (e) {
             flag = 0, dragY = 1;
             startY = e.pageY;
             floatYt = floatY.offsetTop;
             floatYOffset = startY - floatYt;
         });
-        bindEvent("mousedown", draggableX, function (e) {
+        pk.bindEvent("mousedown", draggableX, function (e) {
             flag = 0, dragX = 1;
             startX = e.pageX;
             floatXl = floatX.offsetLeft;
             floatXOffset = startX - floatXl;
         });
 
-        bindEvent("mousemove", draggableY, dragging);
-        bindEvent("mousemove", draggableX, dragging);
-        bindEvent("mousemove", window, function (e) {
+        pk.bindEvent("mousemove", draggableY, dragging);
+        pk.bindEvent("mousemove", draggableX, dragging);
+        pk.bindEvent("mousemove", window, function (e) {
             if (dragY === 1) {
                 startY = floatYt;
                 endY = e.pageY - floatYOffset;
@@ -198,7 +168,8 @@ var pk = pk || {};
                 endY = floatYt + distanceY;
                 percY = endY / (containerH - floatYh);
                 container.scrollTop = (contentH - containerH) * percY;
-                addClass(floatY, 'pk-scroll-dragging');
+                pk.addClass(floatY, 'pk-scroll-dragging');
+                pk.addClass(document.body, 'pk-noselect');
             }
             if (dragX === 1) {
                 startX = floatXl;
@@ -207,28 +178,28 @@ var pk = pk || {};
                 endX = floatXl + distanceX;
                 percX = endX / (containerW - floatXw);
                 container.scrollLeft = (contentW - containerW) * percX;
-                addClass(floatX, 'pk-scroll-dragging');
-                addClass(document.body, 'pk-scroll-scrolling');
+                pk.addClass(floatX, 'pk-scroll-dragging');
+                pk.addClass(document.body, 'pk-noselect');
             }
         });
-        bindEvent("mouseup", window, function () {
+        pk.bindEvent("mouseup", window, function () {
             dragY = 0, dragX = 0;
-            removeClass(floatY, 'pk-scroll-dragging');
-            removeClass(floatX, 'pk-scroll-dragging');
+            pk.removeClass(floatY, 'pk-scroll-dragging');
+            pk.removeClass(floatX, 'pk-scroll-dragging');
             if (flag === 1) {
                 document.onselectstart = function () {
                     return true;
                 };
-                removeClass(document.body, 'pk-scroll-scrolling');
+                pk.removeClass(document.body, 'pk-noselect');
                 flag = 0;
             }
         });
 
         // TRACK CLICKING HANDLERS
-        bindEvent("click", trackY, function (e) {
+        pk.bindEvent("click", trackY, function (e) {
             container.scrollTop = ((e.pageY - el.getBoundingClientRect().top) / containerH * (contentH - containerH));
         });
-        bindEvent("click", trackX, function (e) {
+        pk.bindEvent("click", trackX, function (e) {
             container.scrollLeft = ((e.pageX - el.getBoundingClientRect().left) / containerW * (contentW - containerW));
         });
 
@@ -244,17 +215,10 @@ var pk = pk || {};
                 container.scrollLeft = container.scrollLeft + (contentW - containerW) * offset;
             }
             /* Stop wheel propogation (prevent parent scrolling) */
-            preventBubble(e);
+            pk.preventBubble(e);
         }
 
-        function preventBubble(e) {
-            if (e.preventDefault) e.preventDefault();
-            if (e.stopPropagation) e.stopPropagation();
-            e.cancelBubble = true; // IE events
-            e.returnValue = false; // IE events
-            return false;
-        }
-        bindEvent(mousewheelevt, container, mouseScroll);
+        pk.bindEvent(mousewheelevt, container, mouseScroll);
 
         // TOUCH EVENT HANDLERS
 
@@ -312,35 +276,35 @@ var pk = pk || {};
             return false;
         }
         if (typeof window.ontouchstart !== 'undefined') {
-            bindEvent('touchstart', container[0], tap);
-            bindEvent('touchmove', container[0], drag);
-            bindEvent('touchend', window, release);
+            pk.bindEvent('touchstart', container[0], tap);
+            pk.bindEvent('touchmove', container[0], drag);
+            pk.bindEvent('touchend', window, release);
         }
 
         // KEYBOARD HANDLERS    
         container.setAttribute("tabindex", 0);
-        bindEvent('keydown', container, function (e) {
+        pk.bindEvent('keydown', container, function (e) {
 
             switch (e.keyCode) {
                 case 38:
                     //up cursor
                     if (!allowY) return;
-                    container.scrollTop -= containerH * .1;
+                    container.scrollTop -= containerH * 0.1;
                     break;
                 case 40:
                     //down cursor
                     if (!allowY) return;
-                    container.scrollTop += containerH * .1;
+                    container.scrollTop += containerH * 0.1;
                     break;
                 case 37:
                     //left cursor
                     if (!allowX) return;
-                    container.scrollLeft -= containerW * .1;
+                    container.scrollLeft -= containerW * 0.1;
                     break;
                 case 39:
                     //right cursor
                     if (!allowX) return;
-                    container.scrollLeft += containerW * .1;
+                    container.scrollLeft += containerW * 0.1;
                     break;
                 case 33:
                     //page up
@@ -362,9 +326,9 @@ var pk = pk || {};
                     if (!allowY) return;
                     container.scrollTop = contentH;
                     break;
-            };
-            preventBubble(e);
+            }
+            pk.preventBubble(e);
         });
-    }
+    };
     return pk;
 })(pk);
