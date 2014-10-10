@@ -5,8 +5,8 @@ var pk = pk || {};
     if (typeof jQuery !== 'undefined') {
         // jquery available
         jQuery.fn.extend({
-            pkScroll: function () {
-                pk.scroll(this[0]);
+            pk-scroll: function (axis) {
+                pk.scroll({element:this[0], axis:axis});
             }
         });
     }
@@ -19,15 +19,15 @@ var pk = pk || {};
                 return {
                     restrict: 'A',
                     link: function (scope, el) {
-                        pk.scroll(el[0]);
+                        pk.scroll({element:el[0], axis:el[0].getAttribute('pk-scroll')});
                     }
                 };
             });
         })();
     }    
-    pk.scroll = function (el) {
-        if (!el.getAttribute('pk-scroll')) return;
-
+    pk.scroll = function (opt) {
+        if (!opt.axis) return;
+        var el=opt.element;
         // INIT SCROLL STRUCTURE
         pk.addClass(el, 'pk-scroll-container');
         var container = document.createElement(el.nodeName);
@@ -68,7 +68,7 @@ var pk = pk || {};
             contentHeight = 0,
             containerWidth = 0,
             containerHeight = 0,
-            scrollDir = el.getAttribute('pk-scroll').toLowerCase(),
+            scrollDir = opt.axis.toLowerCase(),
             mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x  
 
         if (pk.getStyle(el, 'position') == "static") el.style.position = "relative";
