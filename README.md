@@ -24,21 +24,17 @@ Customized scrollbars written in vanilla JS, complete with jQuery and angular wr
 
 ###Usage
 
-Firstly, add the attribute `pk-scroll` and set to either `x`, `y`, or `xy` on the relevant element.
-
-Then, there are 3 ways to initiate pk-scroll.
-
 
 #####Plain Javascript
 
-`pk.scroll(document.getElementById('yourEl'));`*
+`pk.scroll({element:document.getElementById('yourEl'), axis:'xy'});`*
 
 *<sup>You can use any means to retrieve a DOM node to pass to `pk.scroll()`</sup>
 
 #####jQuery
 
-`$('yourEl').pkScroll();`
+`$('yourEl').pkScroll('xy');`
 
 #####Angular
 
-Simply include `pk-scroll` as an application dependancy and the `pkScroll` directive will automatically apply.
+Simply include `pk-scroll` as an application dependancy, add the attribute `pk-scroll` and set to either `x`, `y`, or `xy` on the relevant element and the `pkScroll` directive will automatically apply.
