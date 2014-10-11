@@ -1,7 +1,7 @@
 var pk = pk || {};
 (function (pk) {
     // HELPERS FOR jQUERY+ANGULAR
-    if (typeof jQuery !== 'undefined') {
+    if (jQuery && typeof jQuery === 'object') {
         // jquery available
         jQuery.fn.extend({
             pkScroll: function (axis) {
@@ -12,7 +12,7 @@ var pk = pk || {};
             }
         });
     }
-    if (typeof angular !== 'undefined') {
+    if (angular && typeof angular === 'object') {
         // angular available
         (
 
@@ -32,7 +32,7 @@ var pk = pk || {};
         })();
     }
     pk.scroll = function (opt) {
-        if (!opt.axis) return;
+        if (!opt.axis){ return;}
         var el = opt.element;
         // INIT SCROLL STRUCTURE
         pk.addClass(el, 'pk-scroll-container');
@@ -77,7 +77,7 @@ var pk = pk || {};
             scrollDir = opt.axis.toLowerCase(),
             mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x  
 
-        if (pk.getStyle(el, 'position') == "static") el.style.position = "relative";
+        if (pk.getStyle(el, 'position') === "static") {el.style.position = "relative";}
 
         pk.bindEvent("scroll", container, function () {
             percY = container.scrollTop / (contentH - containerH);
