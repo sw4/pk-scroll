@@ -7,5 +7,5 @@ deploy:
   file: "dist/pk-scroll.min.js"
   skip_cleanup: true
   on:
-    tags: false
+    tags: true
     all_branches: true
