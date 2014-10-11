@@ -59,9 +59,7 @@ var pk = pk || {};
 
         var
         floatYh = 0,
-            floatYt = 0,
             floatXw = 0,
-            floatXl = 0,
             allowY = false,
             allowX = false,
             percY = 0,
@@ -70,8 +68,6 @@ var pk = pk || {};
             contentW = 0,
             containerH = 0,
             containerW = 0,
-            floatYOffset = 0,
-            floatXOffset = 0,
             contentWidth = 0,
             contentHeight = 0,
             containerWidth = 0,
@@ -118,7 +114,7 @@ var pk = pk || {};
         }
         resolveDimensions();
 
-        var resizeMonitor = setInterval(function () {
+        resizeMonitor = setInterval(function () {
             var widthContainer = el.offsetWidth,
                 heightContainer = el.offsetHeight,
                 widthContent = container.scrollWidth,
