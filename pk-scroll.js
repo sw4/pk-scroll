@@ -114,7 +114,7 @@ var pk = pk || {};
         }
         resolveDimensions();
 
-        resizeMonitor = setInterval(function () {
+        setInterval(function () {
             var widthContainer = el.offsetWidth,
                 heightContainer = el.offsetHeight,
                 widthContent = container.scrollWidth,
