@@ -24,7 +24,7 @@
       "url": "https://github.com/github.com/sw4/pk-scroll/master/LICENSE-GPL"
     }
   ],
-  "main": "pk-scroll",
+  "main": "dist/pk-scroll",
   "engines": {
     "node": ">=0.6"
   },
