@@ -1,4 +1,8 @@
 language: node_js
 node_js:
   - "0.11"
-after_success: ./deploy.sh
+script: npm run-script deploy
+env:
+ global:
+ - GH_REF: github.com/sw4/pk-scroll.git
+ - secure: 50911344c144d3bc491738997ee2f6d55ffdc52b
