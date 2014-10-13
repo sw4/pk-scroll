@@ -183,9 +183,9 @@ var pk = pk || {};
                 offset = offset * -1;
             }
             if (allowY) {
-                container.scrollTop = container.scrollTop + (contentH - containerH) * offset;
+                container.scrollTop = Math.round(container.scrollTop + (contentH - containerH) * offset);
             } else {
-                container.scrollLeft = container.scrollLeft + (contentW - containerW) * offset;
+                container.scrollLeft = Math.round(container.scrollLeft + (contentW - containerW) * offset);
             }
             /* Stop wheel propogation (prevent parent scrolling) */
             pk.preventBubble(e);
