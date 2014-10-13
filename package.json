@@ -33,7 +33,7 @@
     "deploy": "./deploy.sh"
   },
   "devDependencies": {
-    "grunt": "~0.3.14"
+    "grunt": "0.4.5"
   },
   "keywords": []
 }
