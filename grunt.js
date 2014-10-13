@@ -46,7 +46,8 @@ module.exports = function(grunt) {
         eqnull: true,
         unused:true,
         browser: true,
-        multistr:true
+        multistr:true,
+        globals: { "angular": false, "jQuery": false }
       },
       globals: {
         jQuery: false
