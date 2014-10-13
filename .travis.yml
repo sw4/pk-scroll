@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "0.11"
 deploy:
-  provider: master
   api-key: "50911344c144d3bc491738997ee2f6d55ffdc52b"
   file: "dist/pk-scroll.min.js"
   skip_cleanup: true
