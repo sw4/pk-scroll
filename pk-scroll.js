@@ -1,7 +1,7 @@
 var pk = pk || {};
 (function (pk) {
     // HELPERS FOR jQUERY+ANGULAR
-    //var jQuery=jQuery || null;
+    var jQuery=jQuery || null;
     if (typeof jQuery === 'object') {
         // jquery available
         jQuery.fn.extend({
@@ -13,7 +13,7 @@ var pk = pk || {};
             }
         });
     }
-    //var angular=angular || null;
+    var angular=angular || null;
     if (typeof angular === 'object') {
         // angular available
         (
