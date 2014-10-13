@@ -33,7 +33,7 @@ module.exports = function(grunt) {
       tasks: 'lint qunit'
     },
     jshint: {
-      all:['grunt.js', 'src/**/*.js'],
+      // all:['grunt.js', 'src/**/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
       }
     }
   });
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  // grunt.loadNpmTasks('grunt-contrib-jshint');
   // Default task.
   grunt.registerTask('default', 'lint qunit concat min');
 
