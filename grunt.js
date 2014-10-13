@@ -46,16 +46,13 @@ module.exports = function(grunt) {
         eqnull: true,
         unused:true,
         browser: true,
-        multistr:true,
-        globals: {
-          jQuery: true,
-          console: true,
-          module: true,
-          angular:true
-        }
+        multistr:true
       },
       globals: {
-        jQuery: false
+        jQuery: true,
+        console: true,
+        module: true,
+        angular:true
       }
     },
     uglify: {}
