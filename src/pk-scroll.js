@@ -1,7 +1,7 @@
 var pk = pk || {};
 (function (pk) {
     // HELPERS FOR jQUERY+ANGULAR
-    if (jQuery && typeof jQuery === 'object') {
+    if (typeof jQuery === 'object') {
         // jquery available
         jQuery.fn.extend({
             pkScroll: function (axis) {
@@ -12,7 +12,7 @@ var pk = pk || {};
             }
         });
     }
-    if (angular && typeof angular === 'object') {
+    if (typeof angular === 'object') {
         // angular available
         (
 
@@ -179,13 +179,13 @@ var pk = pk || {};
         // MOUSE WHEEL HANDLERS
         function mouseScroll(e) {
             var offset = 0.1;
-            if (e.wheelDelta > 0 || e.detail > 0) {
+            if (e.wheelDelta > 0 || e.detail < 0) {
                 offset = offset * -1;
             }
             if (allowY) {
-                container.scrollTop = container.scrollTop + (contentH - containerH) * offset;
+                container.scrollTop = Math.round(container.scrollTop + (contentH - containerH) * offset);
             } else {
-                container.scrollLeft = container.scrollLeft + (contentW - containerW) * offset;
+                container.scrollLeft = Math.round(container.scrollLeft + (contentW - containerW) * offset);
             }
             /* Stop wheel propogation (prevent parent scrolling) */
             pk.preventBubble(e);
