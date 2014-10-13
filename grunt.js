@@ -62,5 +62,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'lint qunit concat min');
 
   // Travis CI task.
-  grunt.registerTask('travis', 'jshint concat min');
+  grunt.registerTask('travis', 'lint concat min');
 };
