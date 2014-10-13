@@ -4,7 +4,8 @@ pk-scroll
 
 [![Build Status](https://travis-ci.org/sw4/pk-scroll.svg?branch=master)](https://travis-ci.org/sw4/pk-scroll)
 [![Coverage Status](https://coveralls.io/repos/sw4/pk-scroll/badge.png)](https://coveralls.io/r/sw4/pk-scroll)
-[![Dev Dependencies  Status](https://david-dm.org/sw4/pk-scroll.png)](https://david-dm.org/sw4/pk-scroll)
+[![Dependencies Status](https://david-dm.org/sw4/pk-scroll.png)](https://david-dm.org/sw4/pk-scroll)
+[![Dev Dependencies Status](https://david-dm.org/sw4/pk-scroll/dev-status.svg)](https://david-dm.org/sw4/pk-scroll)
 
 
 Customized scrollbars written in vanilla JS, complete with jQuery and angular wrappers (where libraries detected, neither are required).
