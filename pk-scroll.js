@@ -179,7 +179,7 @@ var pk = pk || {};
         // MOUSE WHEEL HANDLERS
         function mouseScroll(e) {
             var offset = 0.1;
-            if (e.wheelDelta > 0 || e.detail > 0) {
+            if (e.wheelDelta > 0 || e.detail < 0) {
                 offset = offset * -1;
             }
             if (allowY) {
