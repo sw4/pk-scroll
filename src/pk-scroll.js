@@ -1,7 +1,7 @@
 var pk = pk || {};
 (function (pk) {
     // HELPERS FOR jQUERY+ANGULAR
-    if (typeof jQuery === 'object') {
+    if (jQuery && typeof jQuery === 'object') {
         // jquery available
         jQuery.fn.extend({
             pkScroll: function (axis) {
@@ -12,7 +12,7 @@ var pk = pk || {};
             }
         });
     }
-    if (typeof angular === 'object') {
+    if (angular && typeof angular === 'object') {
         // angular available
         (
 
