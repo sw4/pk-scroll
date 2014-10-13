@@ -29,7 +29,8 @@
     "node": ">=0.6"
   },
   "scripts": {
-    "test": "grunt travis --verbose"
+    "test": "grunt travis --verbose",
+    "deploy": "./deploy.sh"
   },
   "devDependencies": {
     "grunt": "~0.3.14"
