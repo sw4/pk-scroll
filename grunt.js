@@ -57,10 +57,18 @@ module.exports = function(grunt) {
       }
     }
   });
-  // grunt.loadNpmTasks('grunt-contrib-jshint');
+  
+
+  // Actually load this plugin"s task(s).
+  grunt.loadTasks("tasks");
+
+  // These plugins provide necessary tasks.
+  grunt.loadNpmTasks("grunt-contrib-jshint");
+  
+  
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', ['lint','qunit','concat','min']);
 
   // Travis CI task.
-  grunt.registerTask('travis', 'lint concat min');
+  grunt.registerTask('travis', ['lint','concat','min']);
 };
