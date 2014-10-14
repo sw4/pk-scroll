@@ -33,7 +33,6 @@ module.exports = function(grunt) {
       tasks: 'lint qunit'
     },
     jshint: {
-      // all:['grunt.js', 'src/**/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
@@ -55,20 +54,13 @@ module.exports = function(grunt) {
         module: true,
         angular:true
       }
-    }
+    },
+    uglify: {}
   });
-  
 
-  // Actually load this plugin"s task(s).
-  grunt.loadTasks("tasks");
-
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks("grunt-contrib-jshint");
-  
-  
   // Default task.
-  grunt.registerTask('default', ['lint','qunit','concat','min']);
+  grunt.registerTask('default', 'lint qunit concat min');
 
   // Travis CI task.
-  grunt.registerTask('travis', ['lint','concat','min']);
+  grunt.registerTask('travis', 'lint concat min');
 };
