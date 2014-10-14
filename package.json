@@ -26,18 +26,13 @@
   ],
   "main": "dist/pk-scroll",
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.6"
   },
   "scripts": {
-    "test": "grunt travis --verbose",
-    "deploy": "./deploy.sh"
-  },
-  "dependencies": {
-    "jquery": "~2.1.1"
+    "test": "grunt travis --verbose"
   },
   "devDependencies": {
-    "grunt": "0.4.0",
-    "grunt-contrib-jshint": "~0.10.0"
+    "grunt": "~0.3.14"
   },
   "keywords": []
 }
