@@ -156,7 +156,7 @@ var pk = pk || {};
                 listeners: {
                     dragging: function () {
     
-                        container.scrollLeft = (contentW - containerW) * (floatX.offsetLeft / (trackX.offsetWidth - floatY.offsetWidth));
+                        container.scrollLeft = (contentW - containerW) * (floatX.offsetLeft / (trackX.offsetWidth - floatX.offsetWidth));
                     }
                 }
             });
