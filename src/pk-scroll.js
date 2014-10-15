@@ -70,9 +70,7 @@ var pk = pk || {};
             contentHeight = 0,
             containerWidth = 0,
             containerHeight = 0,
-            scrollDir = opt.axis.toLowerCase(),
-            mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x  
-
+            scrollDir = opt.axis.toLowerCase();
         if (pk.getStyle(el, 'position') === "static") {el.style.position = "relative";}
 
         pk.bindEvent("scroll", container, function () {
@@ -191,7 +189,7 @@ var pk = pk || {};
             pk.preventBubble(e);
         }
 
-        pk.bindEvent(mousewheelevt, container, mouseScroll);
+        pk.bindEvent("mousewheel", container, mouseScroll);
 
         // TOUCH EVENT HANDLERS
 
