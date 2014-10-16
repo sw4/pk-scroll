@@ -21,6 +21,7 @@
     top:auto;
     display:none;
     box-sizing:border-box;
+    overflow:hidden;
 }
 .pk-scroll-container.pk-scroll-enableY .pk-scroll-trackY {
     display:block;
@@ -46,8 +47,8 @@
     transition:background 150ms ease-in;
     box-sizing:border-box;
 }
-.pk-scroll-floatY:hover, .pk-scroll-floatX:hover, .pk-scroll-dragging {
-    background:#299983;
+.pk-scroll-floatY:hover, .pk-scroll-floatX:hover, .pk-scroll-floatY.pk-drag-dragging,.pk-scroll-floatX.pk-drag-dragging {
+    background:#0CC09F;
 }
 .pk-scroll-floatY {
     top:0;
