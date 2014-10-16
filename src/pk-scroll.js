@@ -32,27 +32,28 @@ var pk = pk || {};
         })();
     }
     pk.scroll = function (opt) {
-        if (!opt.axis){ return;}
+        
         var el = opt.element;
         // INIT SCROLL STRUCTURE
-        pk.addClass(el, 'pk-scroll-container');
-        var container = document.createElement(el.nodeName);
-        pk.addClass(container, 'pk-scroll-content').innerHTML = el.innerHTML;
-        var trackY = document.createElement('div');
-        pk.addClass(trackY, 'pk-scroll-trackY');
-        var floatY = document.createElement('div');
-        pk.addClass(floatY, 'pk-scroll-floatY');
-        trackY.appendChild(floatY);
-        var trackX = document.createElement('div');
-        pk.addClass(trackX, 'pk-scroll-trackX');
-        var floatX = document.createElement('div');
-        pk.addClass(floatX, 'pk-scroll-floatX');
-        trackX.appendChild(floatX);
-        el.innerHTML = '';
-        el.appendChild(container);
-        el.appendChild(trackY);
-        el.appendChild(trackX);
-
+        
+        var tpl="<div class='pk-scroll-container'>\
+            <"+el.nodeName+" class='pk-scroll-content'>\
+                "+el.innerHTML+"\
+            </"+el.nodeName+">\
+            <div class='pk-scroll-trackY'>\
+                <div class='pk-scroll-floatY'></div>\
+            </div>\
+            <div class='pk-scroll-trackX'>\
+                <div class='pk-scroll-floatX'></div>\
+            </div>\
+        </div>";
+        el.innerHTML='';
+        el = pk.replaceEl(el, tpl);
+        var container = el.children[0],
+            trackY = el.children[1],
+            floatY = trackY.children[0],
+            trackX = el.children[2],
+            floatX = trackY.children[0];        
         // INIT VARIABLES
 
         var
@@ -70,7 +71,7 @@ var pk = pk || {};
             contentHeight = 0,
             containerWidth = 0,
             containerHeight = 0,
-            scrollDir = opt.axis.toLowerCase();
+            scrollDir = opt.axis ? opt.axis.toLowerCase() : "y";        
         if (pk.getStyle(el, 'position') === "static") {el.style.position = "relative";}
 
         pk.bindEvent("scroll", container, function () {
