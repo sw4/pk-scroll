@@ -53,9 +53,8 @@ var pk = pk || {};
             trackY = el.children[1],
             floatY = trackY.children[0],
             trackX = el.children[2],
-            floatX = trackY.children[0];        
+            floatX = trackX.children[0];        
         // INIT VARIABLES
-
         var
         floatYh = 0,
             floatXw = 0,
@@ -71,9 +70,9 @@ var pk = pk || {};
             contentHeight = 0,
             containerWidth = 0,
             containerHeight = 0,
-            scrollDir = opt.axis ? opt.axis.toLowerCase() : "y";        
+            scrollDir = opt.axis ? opt.axis.toLowerCase() : (pk.attribute(el, 'pk-scroll') ?  pk.attribute(el, 'pk-scroll') : "y");
         if (pk.getStyle(el, 'position') === "static") {el.style.position = "relative";}
-
+       
         pk.bindEvent("scroll", container, function () {
             percY = container.scrollTop / (contentH - containerH);
             percX = container.scrollLeft / (contentW - containerW);
